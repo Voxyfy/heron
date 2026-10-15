@@ -101,11 +101,13 @@ final class LicenseState {
             remember(info)
         } catch LicenseClient.Problem.offline {
             // Keep the cached answer; `offlineTooLong` ends the grace period eventually.
-        } catch {
+        } catch LicenseClient.Problem.refused {
             // The server answered and the key is bad: show that, keep the key for the user to see.
             var info = self.info ?? LicenseClient.Info(status: "disabled")
             info.status = "disabled"
             remember(info)
+        } catch {
+            // An odd answer (outage, changed format): keep the cached state, like being offline.
         }
     }
 

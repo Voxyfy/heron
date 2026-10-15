@@ -118,6 +118,11 @@ struct MainWindow: View {
             if UserDefaults.standard.bool(forKey: "heron.showConnections") { sheet = .connections }
             if UserDefaults.standard.bool(forKey: "heron.showLogs") { sheet = .logs }
             if UserDefaults.standard.bool(forKey: "heron.showLicense") { sheet = .license }
+            // `-heron.licenseKey XXXX` activates that key at launch, to check the flow end to end.
+            if let key = UserDefaults.standard.string(forKey: "heron.licenseKey"), !key.isEmpty {
+                try? await workspace.license.activate(key)
+                sheet = .license
+            }
         }
         #endif
         .toolbar(removing: .title)

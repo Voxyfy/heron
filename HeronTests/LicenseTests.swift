@@ -22,3 +22,23 @@ final class LicenseTests: XCTestCase {
         XCTAssertNil(LicenseClient.date(from: "yesterday"))
     }
 }
+
+extension LicenseTests {
+    /// A real key from a test-mode purchase, passed as TEST_RUNNER_HERON_LICENSE_KEY (HERON_LICENSE_KEY inside): activates,
+    /// validates and releases the seat again, so the key is left as it was.
+    func testRealKeyRoundTrip() async throws {
+        guard let key = ProcessInfo.processInfo.environment["HERON_LICENSE_KEY"], !key.isEmpty else {
+            throw XCTSkip("No HERON_LICENSE_KEY")
+        }
+        let activated = try await LicenseClient.activate(key, instanceName: "HeronTests")
+        XCTAssertEqual(activated.status, "active")
+        XCTAssertEqual(activated.storeID, LicenseConfig.storeID)
+        XCTAssertNotNil(activated.instanceID)
+        // Subscription keys carry no expires_at; a lapsed subscription changes the status instead.
+        let validated = try await LicenseClient.validate(key, instanceID: activated.instanceID)
+        XCTAssertEqual(validated.status, "active")
+        try await LicenseClient.deactivate(key, instanceID: activated.instanceID!)
+        let after = try await LicenseClient.validate(key, instanceID: activated.instanceID)
+        XCTAssertEqual(after.status, "inactive", "a released instance must not validate")
+    }
+}

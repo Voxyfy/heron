@@ -9,7 +9,7 @@ enum LicenseConfig {
     /// one with its own id, which goes here before the first release. 0 accepts any product.
     static let productID = 0
     /// The checkout link for the yearly plan; the Buy button opens it.
-    static let checkoutURL = URL(string: "https://voxyfy.lemonsqueezy.com/buy/heron")!
+    static let checkoutURL = URL(string: "https://voxyfy.lemonsqueezy.com/checkout/buy/da004c2c-51e1-4a29-8d83-1402a9b6f9a5")!
     /// Days a fresh install runs with everything on.
     static let trialDays = 14
     /// How often a saved key is checked again, and how long a check may fail before Heron asks.

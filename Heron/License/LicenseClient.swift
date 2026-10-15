@@ -40,11 +40,14 @@ enum LicenseClient {
         var form = ["license_key": key]
         if let instanceID { form["instance_id"] = instanceID }
         let json = try await post("validate", form)
-        var info = try info(from: json)
-        if json["valid"] as? Bool != true, info.status == "active" {
-            // The key is fine but this instance isn't (released elsewhere): treat it as inactive here.
-            info.status = "inactive"
+        if json["license_key"] == nil {
+            // "instance_id not found.": the seat was released on another Mac. The key itself may be
+            // fine, so report it as inactive here rather than as a broken answer.
+            if (json["error"] as? String)?.lowercased().contains("instance") == true { return Info(status: "inactive") }
+            throw Problem.refused(message(in: json))
         }
+        var info = try info(from: json)
+        if json["valid"] as? Bool != true, info.status == "active" { info.status = "inactive" }
         return info
     }
 
