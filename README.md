@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="design/icon.png" width="160" alt="Heron app icon">
+  <img src="design/lemonsqueezy-product.png" width="900" alt="Heron — a PHP and Laravel scratchpad for Mac, running a Laravel snippet with result cards">
 </p>
-
-<h1 align="center">Heron</h1>
 
 <p align="center">
   A native PHP and Laravel scratchpad for macOS.<br>
@@ -13,9 +11,6 @@
 
 Heron runs PHP snippets with the PHP already on your Mac (Laravel Herd or Homebrew). Pick a project and the snippet runs inside it: Laravel is booted, so models, config and the database are right there. It's built with SwiftUI and runs only on macOS.
 
-<p align="center">
-  <img src="docs/assets/screenshot.png" width="900" alt="Heron running a Laravel snippet: the code on the left, result cards on the right">
-</p>
 
 ## Features
 
