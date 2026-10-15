@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="design/lemonsqueezy-product.png" width="900" alt="Heron — a PHP and Laravel scratchpad for Mac, running a Laravel snippet with result cards">
+  <img src="design/product.png" width="900" alt="Heron — a PHP and Laravel scratchpad for Mac, running a Laravel snippet with result cards">
 </p>
 
 <p align="center">
@@ -34,7 +34,7 @@ Heron runs PHP snippets with the PHP already on your Mac (Laravel Herd or Homebr
 ## Get Heron
 
 - Download [Heron.dmg](https://github.com/Voxyfy/heron/releases/latest/download/Heron.dmg) (or pick a version under [Releases](https://github.com/Voxyfy/heron/releases)). It's signed and notarized; updates arrive in the app (Sparkle).
-- 14-day free trial, then **$10 a year** for two Macs, sold through Lemon Squeezy. The key goes into Heron ▸ License… (or Settings ▸ License).
+- 14-day free trial, then **$10 a year** for two Macs, sold through Polar. The key goes into Heron ▸ License… (or Settings ▸ License).
 - Site: [voxyfy.github.io/heron](https://voxyfy.github.io/heron) · [Support](https://voxyfy.github.io/heron/support.html) · [Privacy](https://voxyfy.github.io/heron/privacy.html)
 
 ## Requirements
@@ -73,7 +73,7 @@ docker exec heron-sshd sh -c 'apk add --no-cache php83-cli php83-tokenizer php83
 
 ## Releasing
 
-`scripts/release.sh` archives a Release build, signs it with Developer ID, builds a DMG, notarizes and staples it, signs the update with Sparkle's EdDSA key and adds the `<item>` to `docs/appcast.xml`. One-time setup is described at the top of the script (notarytool credentials, Sparkle keys, `SPARKLE_PUBLIC_ED_KEY` in project.yml, Lemon Squeezy IDs in `Heron/License/LicenseConfig.swift`). Afterwards: edit `docs/releases/<version>.html`, commit `docs/`, push, and create the GitHub release with the DMG attached.
+`scripts/release.sh` archives a Release build, signs it with Developer ID, builds a DMG, notarizes and staples it, signs the update with Sparkle's EdDSA key and adds the `<item>` to `docs/appcast.xml`. One-time setup is described at the top of the script (notarytool credentials, Sparkle keys, `SPARKLE_PUBLIC_ED_KEY` in project.yml, the Polar organization id in `Heron/License/LicenseConfig.swift`). Afterwards: edit `docs/releases/<version>.html`, commit `docs/`, push, and create the GitHub release with the DMG attached.
 
 ## Translations
 

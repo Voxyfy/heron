@@ -1895,12 +1895,12 @@
         }
       }
     },
-    "Renew on Lemon Squeezy, then enter the key again.": {
+    "Renew your license, then enter the key again.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lemon Squeezy'de yenileyin, sonra anahtarı yeniden girin."
+            "value": "Lisansınızı yenileyin, sonra anahtarı yeniden girin."
           }
         }
       }
@@ -2463,6 +2463,16 @@
         }
       }
     },
+    "That doesn't look like a license key.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bir lisans anahtarına benzemiyor."
+          }
+        }
+      }
+    },
     "That key isn't recognised. Check for typos; the key is in your purchase email.": {
       "localizations": {
         "tr": {
@@ -2600,6 +2610,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Temalar editörü, sonuçları ve pencereyi renklendirir."
+          }
+        }
+      }
+    },
+    "This build isn't connected to a shop yet.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu sürüm henüz bir mağazaya bağlı değil."
           }
         }
       }

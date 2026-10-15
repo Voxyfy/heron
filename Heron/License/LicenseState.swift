@@ -156,7 +156,7 @@ final class LicenseState {
         status = Self.isGood(info) ? .licensed(info) : .lapsed(info)
     }
 
-    /// "Batuhan's MacBook Pro", so the customer can tell seats apart on the Lemon Squeezy page.
+    /// "Batuhan's MacBook Pro", so the customer can tell seats apart in the Polar customer portal.
     private static var instanceName: String {
         Host.current().localizedName ?? "Mac"
     }

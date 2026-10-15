@@ -1,15 +1,18 @@
 import Foundation
 
-/// Where Heron is sold. Fill these in from the Lemon Squeezy dashboard; until then every key
-/// that Lemon Squeezy accepts is taken, whichever product it belongs to.
+/// Where Heron is sold: Polar (polar.sh), merchant of record. The license endpoints the app
+/// uses take only the key and the organization id, so no token ships in the app.
 enum LicenseConfig {
-    /// Settings ▸ Stores: Voxyfy, #498451 (the same in test and live mode).
-    static let storeID = 498451
-    /// The Heron product's ID. 1442112 is the TEST-mode product; "Copy to Live Mode" makes a new
-    /// one with its own id, which goes here before the first release. 0 accepts any product.
-    static let productID = 0
+    /// Polar ▸ Settings ▸ General: the organization's id (a UUID). Empty until the shop exists.
+    static let polarOrganizationID = "85eab49a-6d86-4467-a8a2-da966bc64a30"
+    /// Polar's sandbox (sandbox.polar.sh) has its own organizations and keys; true while testing.
+    static let polarSandbox = false
+    static var apiBase: URL {
+        URL(string: polarSandbox ? "https://sandbox-api.polar.sh/v1/customer-portal/license-keys/"
+                                 : "https://api.polar.sh/v1/customer-portal/license-keys/")!
+    }
     /// The checkout link for the yearly plan; the Buy button opens it.
-    static let checkoutURL = URL(string: "https://voxyfy.lemonsqueezy.com/checkout/buy/da004c2c-51e1-4a29-8d83-1402a9b6f9a5")!
+    static let checkoutURL = URL(string: "https://buy.polar.sh/polar_cl_JXRFKGs8lVmfH1LAxXkVSPjVNWJsn1BfcoCT73CWx9o")!
     /// Days a fresh install runs with everything on.
     static let trialDays = 14
     /// How often a saved key is checked again, and how long a check may fail before Heron asks.

@@ -73,7 +73,7 @@ struct LicenseSheet: View {
         case .trialExpired: String(localized: "Thanks for trying Heron. A license keeps it running: $10 a year, two Macs.")
         case .licensed: String(localized: "Thank you for supporting Heron.")
         case .lapsed(let info):
-            info.status == "expired" ? String(localized: "Renew on Lemon Squeezy, then enter the key again.")
+            info.status == "expired" ? String(localized: "Renew your license, then enter the key again.")
                                      : String(localized: "The license server refused the saved key. Enter a key, or contact support.")
         }
     }
