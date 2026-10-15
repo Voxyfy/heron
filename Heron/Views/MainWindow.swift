@@ -18,10 +18,11 @@ struct MainWindow: View {
     @State private var table: DumpNode?
 
     enum Sheet: Identifiable {
-        case history, snippets, saveSnippet(String), palette, connections, logs
+        case history, snippets, saveSnippet(String), palette, connections, logs, license
         var id: String {
             switch self {
             case .logs: "logs"
+            case .license: "license"
             case .history: "history"
             case .snippets: "snippets"
             case .saveSnippet: "save"
@@ -55,6 +56,7 @@ struct MainWindow: View {
             }
         }
         .environment(\.theme, theme)
+        .environment(workspace.license)
         .background(theme.panelColor)
         .navigationTitle("Heron — \(workspace.title(of: workspace.selected))")
         .sheet(item: $sheet) { which in
@@ -66,6 +68,7 @@ struct MainWindow: View {
                 case .palette: CommandPalette(workspace: workspace, perform: perform)
                 case .connections: ConnectionsSheet(workspace: workspace)
                 case .logs: LogsSheet(workspace: workspace)
+                case .license: LicenseSheet(license: workspace.license)
                 }
             }
             .environment(\.theme, theme)
@@ -85,6 +88,15 @@ struct MainWindow: View {
         .onReceive(NotificationCenter.default.publisher(for: .heronShowPalette)) { _ in sheet = .palette }
         .onReceive(NotificationCenter.default.publisher(for: .heronShowConnections)) { _ in sheet = .connections }
         .onReceive(NotificationCenter.default.publisher(for: .heronShowLogs)) { _ in sheet = .logs }
+        .onReceive(NotificationCenter.default.publisher(for: .heronShowLicense)) { _ in sheet = .license }
+        .onChange(of: workspace.wantsLicense) {
+            if workspace.wantsLicense { sheet = .license; workspace.wantsLicense = false }
+        }
+        .task {
+            // Ask once at launch when the trial is over; otherwise just re-check a saved key quietly.
+            if !workspace.license.canRun { sheet = .license }
+            await workspace.license.refresh()
+        }
         .alert(String(localized: "Trust this server?"),
                isPresented: Binding(get: { workspace.selected.hostKeyError != nil },
                                     set: { if !$0 { workspace.selected.hostKeyError = nil } }),
@@ -105,6 +117,7 @@ struct MainWindow: View {
             // `-heron.showConnections YES` opens the connection manager, for screenshots.
             if UserDefaults.standard.bool(forKey: "heron.showConnections") { sheet = .connections }
             if UserDefaults.standard.bool(forKey: "heron.showLogs") { sheet = .logs }
+            if UserDefaults.standard.bool(forKey: "heron.showLicense") { sheet = .license }
         }
         #endif
         .toolbar(removing: .title)
@@ -194,6 +207,7 @@ struct MainWindow: View {
         case .connections: sheet = .connections
         case .connect(let connection): workspace.connect(connection)
         case .logs: sheet = .logs
+        case .license: sheet = .license
         case .toggleLayout: stacked.toggle()
         case .toggleQueries: showsQueries.toggle()
         case .openFolder(let url): workspace.newTab(project: url, keepProject: false)
@@ -211,6 +225,7 @@ extension Notification.Name {
     static let heronShowPalette = Notification.Name("heron.showPalette")
     static let heronShowConnections = Notification.Name("heron.showConnections")
     static let heronShowLogs = Notification.Name("heron.showLogs")
+    static let heronShowLicense = Notification.Name("heron.showLicense")
 }
 
 /// Lets a result card open the table preview for its value.
@@ -404,6 +419,12 @@ private struct StatusBar: View {
                 let time = ms < 1 ? "<1 ms" : String(format: "%.0f ms", ms)
                 let memory = result.memory.map { " / " + ByteCountFormatter.string(fromByteCount: Int64($0), countStyle: .memory) } ?? ""
                 segment(time + memory)
+            }
+            if case .trial(let days) = workspace.license.status {
+                Button { NotificationCenter.default.post(name: .heronShowLicense, object: nil) } label: {
+                    segment(String(localized: "Trial · \(days) days"), color: theme.accentColor)
+                }
+                .buttonStyle(.plain)
             }
             Spacer()
             Text(workspace.connection(of: tab).map { "\($0.username)@\($0.host):\($0.remotePath)" }

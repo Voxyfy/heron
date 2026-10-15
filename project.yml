@@ -9,12 +9,17 @@ packages:
   Citadel:
     url: https://github.com/orlandos-nl/Citadel
     from: "0.9.0"
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: "2.6.0"
 settings:
   base:
     SWIFT_VERSION: "6.0"
     SWIFT_EMIT_LOC_STRINGS: YES
     LOCALIZATION_PREFERS_STRING_CATALOGS: YES
-    MARKETING_VERSION: "0.1.0"
+    MARKETING_VERSION: "1.0.0"
+    # Sparkle's EdDSA public key; the private one lives in the publisher's Keychain (see scripts/release.sh).
+    SPARKLE_PUBLIC_ED_KEY: ""
     CURRENT_PROJECT_VERSION: "1"
     DEVELOPMENT_TEAM: 4U5QVH3U6A
     CODE_SIGN_STYLE: Automatic
@@ -27,6 +32,7 @@ targets:
       - Heron
     dependencies:
       - package: Citadel
+      - package: Sparkle
     entitlements:
       path: Heron/Resources/Heron.entitlements
       properties: {}
@@ -40,6 +46,10 @@ targets:
         CFBundleLocalizations: [en, tr]
         LSApplicationCategoryType: public.app-category.developer-tools
         LSMinimumSystemVersion: "15.0"
+        SUFeedURL: https://voxyfy.github.io/heron/appcast.xml
+        SUPublicEDKey: $(SPARKLE_PUBLIC_ED_KEY)
+        SUEnableAutomaticChecks: true
+        SUScheduledCheckInterval: 86400
   HeronTests:
     type: bundle.unit-test
     platform: macOS

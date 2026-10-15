@@ -9,12 +9,24 @@ Without prior written permission from the copyright holder you may not:
   - copy, modify, translate or create derivative works of it;
   - distribute, publish, sublicense, sell, rent or lend it, or any binary built from it;
   - use it, or any part of it, in another product or service, commercial or not;
+  - remove, bypass or alter the trial, license-key or update mechanisms;
   - remove or change this notice.
 
+All rights of use and exploitation stay with the copyright holder. This includes, without
+limitation, the exclusive right to build, sign, distribute, sell, license, rent, market,
+advertise and offer the software and any service around it, in any form, in any country,
+through any channel, now or in the future.
+
+The name "Heron", the Heron app icon and artwork, the Voxyfy name and the look of the
+application are the property of the copyright holder and may not be used to name,
+promote or market any other product or service, or in any way that suggests endorsement.
+
 Viewing this repository on GitHub, including the copies GitHub's Terms of Service allow
-it to make, does not grant any license beyond reading.
+it to make, does not grant any license beyond reading. Third-party components keep their
+own licenses, listed in THIRD_PARTY.md.
 
 Heron is sold by Voxyfy as a signed and notarized Mac app, under the license agreement
-that comes with your purchase.
+that comes with your purchase. Buying a license gives you the right to run the app on the
+number of Macs stated in that purchase; it does not transfer any right in the source code.
 
 Contact: haymana.batuhan@gmail.com

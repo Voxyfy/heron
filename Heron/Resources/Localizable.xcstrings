@@ -140,6 +140,16 @@
         }
       }
     },
+    "Activate": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etkinleştir"
+          }
+        }
+      }
+    },
     "Add": {
       "localizations": {
         "tr": {
@@ -231,12 +241,42 @@
         }
       }
     },
+    "Buy Heron — $10 / year": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron Satın Al — yılda 10 $"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Vazgeç"
+          }
+        }
+      }
+    },
+    "Check Now": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şimdi Denetle"
+          }
+        }
+      }
+    },
+    "Check for Updates…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güncellemeleri Denetle…"
           }
         }
       }
@@ -650,6 +690,26 @@
         }
       }
     },
+    "Everything is on during the trial. Enter a key any time.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneme süresinde her şey açık. Anahtarı istediğiniz zaman girebilirsiniz."
+          }
+        }
+      }
+    },
+    "Expired": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süresi dolmuş"
+          }
+        }
+      }
+    },
     "Export CSV": {
       "localizations": {
         "tr": {
@@ -666,6 +726,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yazı Tipi"
+          }
+        }
+      }
+    },
+    "Frees the seat so the key can be used on another Mac.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac'in yerini boşaltır; anahtar başka bir Mac'te kullanılabilir."
+          }
+        }
+      }
+    },
+    "From your purchase email. One key works on two Macs.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın alma e-postanızdan. Bir anahtar iki Mac'te çalışır."
           }
         }
       }
@@ -716,12 +796,32 @@
     "Heron - %@": {
       "shouldTranslate": false
     },
+    "Heron couldn't reach the license server. Check your connection and try again.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron lisans sunucusuna ulaşamadı. Bağlantınızı denetleyip yeniden deneyin."
+          }
+        }
+      }
+    },
     "Heron hasn't connected to %@ before.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Heron daha önce %@ sunucusuna bağlanmadı."
+          }
+        }
+      }
+    },
+    "Heron is licensed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron lisanslı"
           }
         }
       }
@@ -858,6 +958,16 @@
         }
       }
     },
+    "Key": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anahtar"
+          }
+        }
+      }
+    },
     "LEVEL": {
       "localizations": {
         "tr": {
@@ -887,6 +997,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Laravel ve düz PHP projeleri. Modeller, ayarlar ve veritabanı birlikte gelir."
+          }
+        }
+      }
+    },
+    "Last checked": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son denetim"
           }
         }
       }
@@ -928,6 +1048,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "Düzeyler (%lld)"
+          }
+        }
+      }
+    },
+    "License": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisans"
+          }
+        }
+      }
+    },
+    "License key": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisans anahtarı"
+          }
+        }
+      }
+    },
+    "Licensed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisanslı"
+          }
+        }
+      }
+    },
+    "Licensed to": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisans sahibi"
+          }
+        }
+      }
+    },
+    "License…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisans…"
           }
         }
       }
@@ -1191,6 +1361,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seçilmedi"
+          }
+        }
+      }
+    },
+    "Not active": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etkin değil"
           }
         }
       }
@@ -1575,6 +1755,16 @@
         }
       }
     },
+    "Quit Heron": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron'dan Çık"
+          }
+        }
+      }
+    },
     "Quotes when tidying": {
       "localizations": {
         "tr": {
@@ -1611,6 +1801,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Son klasörler"
+          }
+        }
+      }
+    },
+    "Release This Mac": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac'i Serbest Bırak"
           }
         }
       }
@@ -1691,6 +1891,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Grubu yeniden adlandır"
+          }
+        }
+      }
+    },
+    "Renew on Lemon Squeezy, then enter the key again.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lemon Squeezy'de yenileyin, sonra anahtarı yeniden girin."
+          }
+        }
+      }
+    },
+    "Renews on": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yenilenme tarihi"
           }
         }
       }
@@ -2123,6 +2343,16 @@
         }
       }
     },
+    "Status": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durum"
+          }
+        }
+      }
+    },
     "Stop": {
       "localizations": {
         "tr": {
@@ -2213,6 +2443,36 @@
         }
       }
     },
+    "Thank you for supporting Heron.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron'a destek olduğunuz için teşekkürler."
+          }
+        }
+      }
+    },
+    "Thanks for trying Heron. A license keeps it running: $10 a year, two Macs.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron'u denediğiniz için teşekkürler. Devam etmek için lisans gerekir: yılda 10 $, iki Mac."
+          }
+        }
+      }
+    },
+    "That key isn't recognised. Check for typos; the key is in your purchase email.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu anahtar tanınmadı. Yazımı denetleyin; anahtar satın alma e-postanızda."
+          }
+        }
+      }
+    },
     "The identity of %@ has changed. Someone may be intercepting the connection.": {
       "localizations": {
         "tr": {
@@ -2223,12 +2483,52 @@
         }
       }
     },
+    "The key is in your purchase email. One key works on two Macs.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anahtar satın alma e-postanızda. Bir anahtar iki Mac'te çalışır."
+          }
+        }
+      }
+    },
     "The key's passphrase is incorrect.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Anahtarın parola cümlesi yanlış."
+          }
+        }
+      }
+    },
+    "The license server gave an unexpected answer.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisans sunucusu beklenmedik bir yanıt verdi."
+          }
+        }
+      }
+    },
+    "The license server refused the key.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisans sunucusu anahtarı kabul etmedi."
+          }
+        }
+      }
+    },
+    "The license server refused the saved key. Enter a key, or contact support.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisans sunucusu kayıtlı anahtarı kabul etmedi. Bir anahtar girin ya da destekle iletişime geçin."
           }
         }
       }
@@ -2314,12 +2614,72 @@
         }
       }
     },
+    "This key belongs to another product.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu anahtar başka bir ürüne ait."
+          }
+        }
+      }
+    },
+    "This key is already in use on its allowed number of Macs. Release one in Settings ▸ License on that Mac, or buy another seat.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu anahtar izin verilen sayıda Mac'te zaten kullanımda. O Mac'te Ayarlar ▸ Lisans'tan birini serbest bırakın ya da yeni bir lisans alın."
+          }
+        }
+      }
+    },
     "This key is protected. Enter its passphrase.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Bu anahtar korumalı. Parola cümlesini girin."
+          }
+        }
+      }
+    },
+    "This license has been disabled.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu lisans devre dışı bırakılmış."
+          }
+        }
+      }
+    },
+    "This license has expired. Renew it to keep using Heron.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu lisansın süresi dolmuş. Heron'u kullanmaya devam etmek için yenileyin."
+          }
+        }
+      }
+    },
+    "This license isn't active": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu lisans etkin değil"
+          }
+        }
+      }
+    },
+    "This license isn't active.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu lisans etkin değil."
           }
         }
       }
@@ -2382,6 +2742,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "SQL Sorgularını Aç/Kapat"
+          }
+        }
+      }
+    },
+    "Trial ended": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneme sona erdi"
+          }
+        }
+      }
+    },
+    "Trial status, enter a key": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneme durumu, anahtar girme"
+          }
+        }
+      }
+    },
+    "Trial · %lld days": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneme · %lld gün"
+          }
+        }
+      }
+    },
+    "Trial, %lld days left": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneme, %lld gün kaldı"
+          }
+        }
+      }
+    },
+    "Trial: %lld days left": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneme: %lld gün kaldı"
           }
         }
       }
@@ -2512,6 +2922,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uzun satırları kaydır"
+          }
+        }
+      }
+    },
+    "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+          }
+        }
+      }
+    },
+    "Your license has expired": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisansınızın süresi doldu"
+          }
+        }
+      }
+    },
+    "Your trial has ended": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deneme süreniz sona erdi"
           }
         }
       }

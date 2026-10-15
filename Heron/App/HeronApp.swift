@@ -1,8 +1,18 @@
+import Sparkle
 import SwiftUI
 
 @main
 struct HeronApp: App {
     @State private var workspace = Workspace()
+    /// Sparkle: checks the appcast daily and offers updates; the menu item asks right away.
+    /// Not started until the build carries its public key (SUPublicEDKey), or Sparkle shows an
+    /// error alert on every launch.
+    private let updater = SPUStandardUpdaterController(startingUpdater: HeronApp.hasUpdateKey,
+                                                        updaterDelegate: nil, userDriverDelegate: nil)
+
+    static var hasUpdateKey: Bool {
+        !((Bundle.main.infoDictionary?["SUPublicEDKey"] as? String) ?? "").isEmpty
+    }
 
     init() {
         Theme.current.apply()
@@ -17,6 +27,13 @@ struct HeronApp: App {
         .windowToolbarStyle(.unifiedCompact)
         .defaultSize(width: 1280, height: 760)
         .commands {
+            CommandGroup(after: .appInfo) {
+                Button(String(localized: "Check for Updates…")) { updater.updater.checkForUpdates() }
+                    .disabled(!Self.hasUpdateKey || !updater.updater.canCheckForUpdates)
+                Button(String(localized: "License…")) {
+                    NotificationCenter.default.post(name: .heronShowLicense, object: nil)
+                }
+            }
             CommandGroup(replacing: .newItem) {
                 Button(String(localized: "New Tab")) { workspace.newWelcomeTab() }
                     .keyboardShortcut("t")

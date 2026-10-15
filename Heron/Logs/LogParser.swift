@@ -48,7 +48,8 @@ enum LogParser {
     /// The message without its trailing JSON context, cut at a sensible length.
     static func summary(of line: String) -> String {
         var text = line
-        if let brace = text.range(of: " {\"", options: .backwards), text.hasSuffix("}") || text.hasSuffix("} ") {
+        // The context JSON starts at ` {"`; with an exception it runs on for many lines.
+        if let brace = text.range(of: " {\"") {
             text = String(text[..<brace.lowerBound])
         } else if text.hasSuffix(" []") {
             text.removeLast(3)

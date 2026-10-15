@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Heron</title>
+    <link>https://voxyfy.github.io/heron/appcast.xml</link>
+    <description>Heron updates</description>
+    <language>en</language>
+    <!-- scripts/release.sh appends one <item> per release here. -->
+  </channel>
+</rss>

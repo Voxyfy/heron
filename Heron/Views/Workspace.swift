@@ -12,6 +12,7 @@ final class Workspace {
     let history = History()
     let snippets = SnippetStore()
     let connections = ConnectionStore()
+    let license = LicenseState()
     /// Why the snippet couldn't even start, when there's no PHP.
     private(set) var failure: String?
     private var versions: [URL: String] = [:]
@@ -183,8 +184,15 @@ final class Workspace {
 
     // MARK: Running
 
+    /// Set when a run was refused because the trial ended; the window shows the license sheet.
+    var wantsLicense = false
+
     func run(tidy: Bool, indent: String) {
         guard !selected.isWelcome else { return }
+        guard license.canRun else {
+            wantsLicense = true
+            return
+        }
         let tab = selected
         let connection = connection(of: tab)
         // A server run needs no PHP here; only tidying does, and it's skipped without one.

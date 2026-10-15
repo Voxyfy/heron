@@ -37,13 +37,14 @@ enum EditorSettings {
 /// Settings: a sidebar of sections, like most developer tools.
 struct SettingsView: View {
     enum Section: String, CaseIterable, Identifiable {
-        case general, editor, appearance, about
+        case general, editor, appearance, license, about
         var id: Self { self }
         var title: String {
             switch self {
             case .general: String(localized: "General")
             case .editor: String(localized: "Editor")
             case .appearance: String(localized: "Appearance")
+            case .license: String(localized: "License")
             case .about: String(localized: "About")
             }
         }
@@ -52,6 +53,7 @@ struct SettingsView: View {
             case .general: "gearshape"
             case .editor: "text.alignleft"
             case .appearance: "paintpalette"
+            case .license: "key"
             case .about: "info.circle"
             }
         }
@@ -81,6 +83,7 @@ struct SettingsView: View {
                     case .general: GeneralSettings()
                     case .editor: EditorSettingsPane()
                     case .appearance: AppearanceSettings()
+                    case .license: LicensePane()
                     case .about: AboutPane()
                     }
                 }
@@ -300,6 +303,55 @@ private struct ThemePreview: View {
             Text("\(number)").foregroundStyle(theme.mutedColor).frame(width: 22, alignment: .trailing).padding(.trailing, 12)
             ForEach(Array(parts.enumerated()), id: \.offset) { _, part in Text(part.0).foregroundStyle(part.1) }
             Spacer()
+        }
+    }
+}
+
+/// Trial or license status, with the key field when there's no key yet.
+private struct LicensePane: View {
+    @Environment(LicenseState.self) private var license
+    @State private var key = ""
+    @State private var failure: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(String(localized: "License")).font(.title2.weight(.semibold)).padding(.bottom, 12)
+            SettingRow(title: String(localized: "Status")) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(statusText).fontWeight(.medium)
+                    if case .trial = license.status {
+                        Button(String(localized: "Buy Heron — $10 / year")) { NSWorkspace.shared.open(LicenseConfig.checkoutURL) }
+                    }
+                    if license.key != nil { LicenseDetails(license: license) }
+                }
+            }
+            if license.key == nil || !license.canRun {
+                Divider()
+                SettingRow(title: String(localized: "License key"),
+                           detail: String(localized: "From your purchase email. One key works on two Macs.")) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            TextField("", text: $key, prompt: Text("XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"))
+                                .textFieldStyle(.roundedBorder).font(.system(.body, design: .monospaced))
+                            Button(String(localized: "Activate")) {
+                                failure = nil
+                                Task { do { try await license.activate(key); key = "" } catch { failure = error.localizedDescription } }
+                            }
+                            .disabled(key.trimmingCharacters(in: .whitespaces).count < 8 || license.checking)
+                        }
+                        if let failure { Text(failure).font(.caption).foregroundStyle(.red) }
+                    }
+                }
+            }
+        }
+    }
+
+    private var statusText: String {
+        switch license.status {
+        case .trial(let days): String(localized: "Trial, \(days) days left")
+        case .trialExpired: String(localized: "Trial ended")
+        case .licensed: String(localized: "Licensed")
+        case .lapsed(let info): info.status == "expired" ? String(localized: "Expired") : String(localized: "Not active")
         }
     }
 }

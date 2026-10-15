@@ -34,6 +34,12 @@ Heron runs PHP snippets with the PHP already on your Mac (Laravel Herd or Homebr
 | 🐳 | Run in a Docker container | Planned |
 | 📜 | Log viewer (⌘L): storage/logs files of the project or the connected server, level filter, search, pages, live reload, full record with stack trace | Done |
 
+## Get Heron
+
+- Download the latest DMG from [Releases](https://github.com/Voxyfy/heron/releases/latest). It's signed and notarized; updates arrive in the app (Sparkle).
+- 14-day free trial, then **$10 a year** for two Macs, sold through Lemon Squeezy. The key goes into Heron ▸ License… (or Settings ▸ License).
+- Site: [voxyfy.github.io/heron](https://voxyfy.github.io/heron) · [Support](https://voxyfy.github.io/heron/support.html) · [Privacy](https://voxyfy.github.io/heron/privacy.html)
+
 ## Requirements
 
 - macOS 15 or later
@@ -67,6 +73,10 @@ docker run -d --name heron-sshd -p 2224:2222 -e PUID=1000 -e PGID=1000 -e USER_N
 docker exec heron-sshd sh -c 'apk add --no-cache php83-cli php83-tokenizer php83-mbstring php83-ctype && ln -sf /usr/bin/php83 /usr/bin/php \
   && mkdir -p /config/app && echo "<?php return [\"name\"=>\"Heron remote\"];" > /config/app/config.php && chown -R 1000:1000 /config/app'
 ```
+
+## Releasing
+
+`scripts/release.sh` archives a Release build, signs it with Developer ID, builds a DMG, notarizes and staples it, signs the update with Sparkle's EdDSA key and adds the `<item>` to `docs/appcast.xml`. One-time setup is described at the top of the script (notarytool credentials, Sparkle keys, `SPARKLE_PUBLIC_ED_KEY` in project.yml, Lemon Squeezy IDs in `Heron/License/LicenseConfig.swift`). Afterwards: edit `docs/releases/<version>.html`, commit `docs/`, push, and create the GitHub release with the DMG attached.
 
 ## Translations
 

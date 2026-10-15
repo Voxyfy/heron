@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heron — Privacy</title>
+<link rel="icon" href="assets/icon.png">
+<style>
+:root{--bg:#282A36;--fg:#F8F8F2;--muted:#9a9aa8;--line:rgba(255,255,255,.08);--accent:#DB578E}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px}a{color:var(--fg)}h1{letter-spacing:-.02em}h2{font-size:22px;margin-top:36px}
+p,li{color:#d5d5dc}nav a{color:var(--muted);text-decoration:none}
+</style>
+</head>
+<body><div class="wrap">
+<nav><a href="index.html">← Heron</a></nav>
+<h1>Privacy</h1>
+<p>Heron is a PHP scratchpad for macOS made by Voxyfy. This page says what it does with your data. Short version: your code and your servers stay with you.</p>
+<h2>What stays on your Mac</h2>
+<ul>
+<li>Your snippets, history, saved snippets, settings and themes are stored on your Mac only.</li>
+<li>Server connections are stored on your Mac; passwords, SSH keys and passphrases go only into your macOS Keychain.</li>
+<li>When you run a snippet on a server, Heron connects to that server directly over SSH. Nothing passes through us.</li>
+</ul>
+<h2>What leaves your Mac</h2>
+<ul>
+<li><strong>License check.</strong> When you enter a license key, and about once a week afterwards, Heron sends the key and your Mac's name to Lemon Squeezy (our payment provider) to confirm it is valid. See <a href="https://www.lemonsqueezy.com/privacy">Lemon Squeezy's privacy policy</a>.</li>
+<li><strong>Updates.</strong> About once a day Heron fetches <code>appcast.xml</code> from this site to see whether a new version exists. The request carries your Heron version and macOS version, nothing else.</li>
+</ul>
+<h2>What Heron does not do</h2>
+<ul>
+<li>No account, no analytics, no crash reporting, no tracking.</li>
+<li>It never sends your code, your database contents or your server details anywhere.</li>
+</ul>
+<h2>Purchases</h2>
+<p>Payments are handled by Lemon Squeezy, who is the merchant of record. We receive your email address and the license key they issued, so we can help you with support and renewals.</p>
+<h2>Contact</h2>
+<p>haymana.batuhan@gmail.com</p>
+<h2 id="tr" lang="tr">Gizlilik (Türkçe)</h2>
+<p lang="tr">Kod parçalarınız, geçmişiniz ve ayarlarınız yalnızca Mac'inizde durur. Sunucu parolaları ve SSH anahtarları macOS Anahtar Zinciri'ne yazılır; sunucuya doğrudan SSH ile bağlanılır. Mac'inizden dışarı yalnızca iki şey çıkar: lisans anahtarı doğrulaması (Lemon Squeezy'ye anahtar ve Mac'in adı, haftada bir) ve günde bir güncelleme denetimi (bu siteden appcast.xml). Hesap, analitik ya da takip yoktur. Ödemeyi Lemon Squeezy alır; bize yalnızca e-posta adresiniz ve lisans anahtarı ulaşır.</p>
+</div></body></html>
