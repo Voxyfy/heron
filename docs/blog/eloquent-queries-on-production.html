@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running Eloquent queries on a production Laravel app, safely</title>
+<meta name="description" content="How to check data on a live Laravel application over SSH without changing anything: tinker one-liners, read-only transactions, query logging, and a repeatable snippet workflow.">
+<link rel="icon" href="../assets/icon.png">
+<style>
+:root{--bg:#282A36;--fg:#F8F8F2;--muted:#9a9aa8;--line:rgba(255,255,255,.08);--accent:#DB578E;--card:#2E303D}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px 90px}
+nav a{color:var(--muted);text-decoration:none}
+h1{font-size:40px;line-height:1.1;letter-spacing:-.03em;margin:28px 0 10px}
+.meta{color:var(--muted);font-size:15px;margin-bottom:36px}
+h2{font-size:26px;letter-spacing:-.02em;margin:44px 0 12px}
+p,li{color:#d5d5dc}
+a{color:var(--fg)}
+pre{background:#1e1f27;border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow:auto;font:14.5px/1.55 "SF Mono",Menlo,monospace;color:#e6e6ea}
+code{font-family:"SF Mono",Menlo,monospace;font-size:.92em;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:5px}
+pre code{background:none;padding:0;font-size:inherit}
+.note{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.tool{border-top:1px solid var(--line);margin-top:48px;padding-top:28px;color:var(--muted);font-size:15px}
+.tool a{color:var(--fg)}
+</style>
+</head>
+<body><div class="wrap">
+<nav><a href="../index.html">← Heron</a></nav>
+
+<h1>Running Eloquent queries on a production Laravel app, safely</h1>
+<p class="meta">October 2026 · 6 min read</p>
+
+<p>Sooner or later you need to look at real data: "how many orders are stuck in <code>pending</code>?", "does this user actually have the role?", "what does that relation return?". The staging database never has the interesting rows. Here is how to answer those questions on a live app over SSH without changing anything, and how to make it a habit you can repeat instead of a thing you dread.</p>
+
+<h2>1. Tinker is already there</h2>
+<p>Every Laravel app ships with <code>php artisan tinker</code>. Over SSH it gives you the whole application: models, config, the database connection the app really uses.</p>
+<pre><code>ssh forge@shop.example.com
+cd /home/forge/shop.example.com/current
+php artisan tinker
+&gt;&gt;&gt; Order::where('status', 'pending')-&gt;count()
+=&gt; 37</code></pre>
+<p>For one question that is enough. For anything longer, the interactive shell gets in the way: no multi-line editing, output that scrolls off, and it is easy to mistype something destructive.</p>
+
+<h2>2. One-liners and snippet files with <code>--execute</code></h2>
+<p>Tinker can run code non-interactively. That turns a question into a command you can repeat, put in a script, or paste into a ticket:</p>
+<pre><code>php artisan tinker --execute="dump(Order::where('status', 'pending')->count());"</code></pre>
+<p>Longer snippets live better in a file. Keep them in a folder on your Mac and send them over SSH; nothing stays on the server:</p>
+<pre><code># snippets/pending-orders.php
+$pending = Order::where('status', 'pending')
+    -&gt;where('created_at', '&lt;', now()-&gt;subDay())
+    -&gt;with('user')
+    -&gt;get();
+
+dump($pending-&gt;count());
+dump($pending-&gt;map(fn ($o) =&gt; [$o-&gt;number, $o-&gt;user-&gt;email, $o-&gt;created_at-&gt;diffForHumans()]));</code></pre>
+<pre><code>ssh forge@shop.example.com "cd /home/forge/shop.example.com/current &amp;&amp; php artisan tinker --execute=\"$(cat snippets/pending-orders.php)\""</code></pre>
+<p>A small shell function makes that one word:</p>
+<pre><code>tink() { ssh "$1" "cd $2 &amp;&amp; php artisan tinker --execute=\"$(cat "$3")\""; }
+tink forge@shop.example.com /home/forge/shop.example.com/current snippets/pending-orders.php</code></pre>
+
+<h2>3. Read-only by default</h2>
+<p>The mistake is never the query you meant to run; it is the <code>-&gt;update()</code> you ran to "test something". Three habits cover almost all of it.</p>
+<p><strong>Wrap the snippet in a transaction you always roll back.</strong> Everything runs, you see every result, and nothing is committed:</p>
+<pre><code>DB::beginTransaction();
+try {
+    // your snippet
+    $user = User::where('email', 'a@example.com')-&gt;first();
+    $user-&gt;update(['role' =&gt; 'admin']);   // happens inside the transaction only
+    dump($user-&gt;fresh()-&gt;role);
+} finally {
+    DB::rollBack();
+}</code></pre>
+<p><strong>Look at the SQL before running it on a big table.</strong> <code>-&gt;toSql()</code> and <code>-&gt;getBindings()</code> cost nothing; <code>-&gt;count()</code> on an unindexed column can.</p>
+<pre><code>dump(Order::where('status', 'pending')-&gt;toSql());</code></pre>
+<p><strong>Log every query the snippet runs.</strong> Then you know what Eloquent actually did, including the N+1 you did not expect:</p>
+<pre><code>DB::listen(fn ($q) =&gt; dump("{$q-&gt;time} ms  {$q-&gt;sql}"));</code></pre>
+<div class="note">If the app has a read replica, point the snippet at it: <code>DB::connection('mysql_read')</code>. Then even a slip cannot write.</div>
+
+<h2>4. Things that bite on a server</h2>
+<ul>
+<li><strong>Environment.</strong> Tinker boots the app with the server's <code>.env</code>. Queued jobs, mails and events fire for real. Use <code>Mail::fake()</code> / <code>Event::fake()</code> at the top of a snippet when you only want to read.</li>
+<li><strong>Memory.</strong> <code>User::all()</code> on a real table is how you learn what <code>memory_limit</code> is. Prefer <code>-&gt;limit()</code>, <code>-&gt;chunk()</code> or <code>-&gt;cursor()</code>.</li>
+<li><strong>Octane / cached config.</strong> Tinker is a fresh process, so it reads the cached config, not a file you just edited.</li>
+<li><strong>Who ran what.</strong> Keep the snippet files in Git. A folder of dated <code>.php</code> files is a better audit trail than shell history.</li>
+</ul>
+
+<h2>5. Make it a workflow</h2>
+<p>The pattern that sticks: snippets as files, one command to run a file on a chosen server, output you can read. Nothing is installed on the server and the project is untouched; the code arrives with the command and leaves with it.</p>
+<pre><code>snippets/
+  orders-pending.php
+  user-roles.php
+  cache-keys.php</code></pre>
+<p>Add the <code>tink</code> function from above, a transaction wrapper you paste at the top, and you have most of a production console with no new infrastructure.</p>
+
+<h2>Checklist</h2>
+<ul>
+<li>Read-only unless you decided otherwise: transaction + rollback, or the read replica.</li>
+<li><code>toSql()</code> first on large tables; <code>limit</code>, <code>chunk</code>, <code>cursor</code>.</li>
+<li>Fake mail, events and queues when you only want to look.</li>
+<li>Snippets in files, in Git; one command to run them over SSH.</li>
+</ul>
+
+<div class="tool">
+<p>If you want the same workflow with a window instead of a terminal: <a href="../index.html">Heron</a> is a PHP scratchpad for Mac that runs a snippet inside your project, locally or on a server over SSH, and shows each value as a card, with the queries it ran and the project's logs next to it. It is what this post grew out of. Everything above works without it.</p>
+</div>
+</div></body></html>
