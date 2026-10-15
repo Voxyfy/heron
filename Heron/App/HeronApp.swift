@@ -5,20 +5,20 @@ struct HeronApp: App {
     @State private var workspace = Workspace()
 
     init() {
-        EditorSettings.applyAppearance(UserDefaults.standard.string(forKey: EditorSettings.appearance) ?? "light")
+        Theme.current.apply()
     }
 
     var body: some Scene {
         Window("Heron", id: "main") {
             MainWindow(workspace: workspace)
                 .frame(minWidth: 860, minHeight: 500)
-                .tint(.heron)
+                .tint(Theme.current.accentColor)
         }
-        .windowToolbarStyle(.unified)
+        .windowToolbarStyle(.unifiedCompact)
         .defaultSize(width: 1280, height: 760)
         .commands {
             CommandGroup(replacing: .newItem) {
-                Button(String(localized: "New Tab")) { workspace.newTab() }
+                Button(String(localized: "New Tab")) { workspace.newWelcomeTab() }
                     .keyboardShortcut("t")
                 Button(String(localized: "Choose Project…")) { workspace.chooseProject() }
                     .keyboardShortcut("o")
@@ -32,14 +32,26 @@ struct HeronApp: App {
                     }
                 }
                 .keyboardShortcut("w")
+                Button(String(localized: "Save as Snippet…")) {
+                    NotificationCenter.default.post(name: .heronSaveSnippet, object: nil)
+                }
+                .keyboardShortcut("s", modifiers: [.command, .shift])
             }
             CommandMenu(String(localized: "Code")) {
                 RunCommands(workspace: workspace)
                 Divider()
+                Button(String(localized: "Open Anything…")) {
+                    NotificationCenter.default.post(name: .heronShowPalette, object: nil)
+                }
+                .keyboardShortcut("p")
                 Button(String(localized: "History…")) {
                     NotificationCenter.default.post(name: .heronShowHistory, object: nil)
                 }
                 .keyboardShortcut("y")
+                Button(String(localized: "Snippets…")) {
+                    NotificationCenter.default.post(name: .heronShowSnippets, object: nil)
+                }
+                .keyboardShortcut("b")
             }
         }
         Settings {
@@ -64,25 +76,4 @@ private struct RunCommands: View {
             .keyboardShortcut(".")
             .disabled(!workspace.selected.isRunning)
     }
-}
-
-extension Color {
-    /// The teal of the heron in the app icon, darker on light backgrounds so text stays readable.
-    static let heron = Color(nsColor: NSColor(name: nil) { appearance in
-        appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-            ? NSColor(red: 0.36, green: 0.80, blue: 0.74, alpha: 1)
-            : NSColor(red: 0.08, green: 0.52, blue: 0.47, alpha: 1)
-    })
-    /// The results area behind the cards.
-    static let heronPanel = Color(nsColor: NSColor(name: nil) { appearance in
-        appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-            ? NSColor(white: 0.13, alpha: 1)
-            : NSColor(red: 0.973, green: 0.973, blue: 0.984, alpha: 1)
-    })
-    /// Lines with a result get this mark in the gutter.
-    static let heronMark = Color(nsColor: .heronMark)
-}
-
-extension NSColor {
-    static let heronMark = NSColor(red: 0.30, green: 0.69, blue: 0.31, alpha: 1)
 }

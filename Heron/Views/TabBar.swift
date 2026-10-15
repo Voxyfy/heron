@@ -3,6 +3,7 @@ import SwiftUI
 /// The row of tabs under the toolbar, one per snippet, plus a "+" for a new one.
 struct TabBar: View {
     let workspace: Workspace
+    @Environment(\.theme) private var theme
 
     var body: some View {
         HStack(spacing: 0) {
@@ -10,16 +11,16 @@ struct TabBar: View {
                 TabItem(tab: tab, isSelected: tab.id == workspace.selectedID,
                         select: { workspace.select(tab) }, close: { workspace.close(tab) })
             }
-            Button { workspace.newTab() } label: {
-                Image(systemName: "plus").font(.system(size: 13)).frame(width: 34, height: 34).contentShape(Rectangle())
+            Button { workspace.newWelcomeTab() } label: {
+                Image(systemName: "plus").font(.system(size: 12)).frame(width: 36, height: 36).contentShape(Rectangle())
             }
             .buttonStyle(.borderless)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(theme.mutedColor)
             .help(String(localized: "New Tab (⌘T)"))
             Spacer(minLength: 0)
         }
-        .frame(height: 34)
-        .background(Color.heronPanel)
+        .frame(height: 36)
+        .background(theme.panelColor)
     }
 }
 
@@ -28,6 +29,7 @@ private struct TabItem: View {
     let isSelected: Bool
     let select: () -> Void
     let close: () -> Void
+    @Environment(\.theme) private var theme
     @State private var isHovering = false
 
     var body: some View {
@@ -36,8 +38,8 @@ private struct TabItem: View {
                 ProgressView().controlSize(.mini)
             }
             Text(tab.title)
-                .font(.system(size: 12.5))
-                .foregroundStyle(isSelected ? .primary : .secondary)
+                .font(.system(size: 12))
+                .foregroundStyle(isSelected ? theme.textColor : theme.mutedColor)
                 .lineLimit(1)
             Spacer(minLength: 0)
             Button(action: close) {
@@ -46,14 +48,13 @@ private struct TabItem: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.borderless)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(theme.mutedColor)
             .opacity(isHovering || isSelected ? 1 : 0)
             .help(String(localized: "Close Tab (⌘W)"))
         }
         .padding(.horizontal, 12)
-        .frame(width: 190, height: 34)
-        .background(isSelected ? Color(nsColor: .textBackgroundColor) : Color.clear)
-        .overlay(alignment: .trailing) { Divider().frame(height: 34) }
+        .frame(width: 180, height: 36)
+        .background(isSelected ? theme.backgroundColor : Color.clear)
         .contentShape(Rectangle())
         .onTapGesture(perform: select)
         .onHover { isHovering = $0 }

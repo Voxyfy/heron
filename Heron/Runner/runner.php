@@ -57,7 +57,7 @@ function heron_dump(mixed $value, int $depth = 0, array &$seen = []): array
         case is_object($value):
             $class = get_class($value);
             $id = spl_object_id($value);
-            $node = ['type' => 'object', 'class' => $class, 'summary' => $class . ' #' . $id];
+            $node = ['type' => 'object', 'class' => $class, 'summary' => $class . ' #' . $id, 'oid' => $id];
             if (isset($seen[$id]) || $depth >= 8) {
                 return $node;
             }
@@ -87,10 +87,7 @@ function heron_properties(object $value, int $depth, array &$seen, int $limit): 
         return $children;
     }
     if (class_exists('Illuminate\Support\Collection') && $value instanceof Illuminate\Support\Collection) {
-        foreach (array_slice($value->all(), 0, $limit, true) as $key => $item) {
-            $children[] = ['key' => (string) $key, 'value' => heron_dump($item, $depth + 1, $seen)];
-        }
-        return $children;
+        return [['key' => 'all', 'value' => heron_dump($value->all(), $depth + 1, $seen)]];
     }
     if ($value instanceof DateTimeInterface) {
         return [['key' => 'date', 'value' => ['type' => 'string', 'summary' => $value->format('Y-m-d H:i:s.u P')]]];
@@ -108,9 +105,9 @@ function heron_properties(object $value, int $depth, array &$seen, int $limit): 
 }
 
 /**
- * Wraps every top-level expression statement in heron_capture(), so each line's value shows up
- * in the result like it does in Tinker, in order. Statements such as echo, if, foreach, use or
- * function are left alone. A missing semicolon on the last line is added.
+ * Wraps every top-level expression statement in heron_capture(): each marks its line in the
+ * gutter, and the last one becomes the result card. Statements such as echo, if, foreach, use
+ * or function are left alone. A missing semicolon on the last line is added.
  */
 function heron_prepare(string $code): string
 {
@@ -123,7 +120,7 @@ function heron_prepare(string $code): string
         T_DECLARE, T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE, T_YIELD, T_YIELD_FROM, T_ENDIF,
         T_ENDFOREACH, T_ENDFOR, T_ENDWHILE, T_ENDSWITCH, T_ENDDECLARE, T_CASE, T_DEFAULT, T_CLOSE_TAG, T_LIST,
         T_HALT_COMPILER, T_ATTRIBUTE];
-    $statements = [];   // [start, end (exclusive, before ';'), firstToken, terminated]
+    $statements = [];   // [start, end (exclusive, before ';'), firstToken, terminated, expression]
     $depth = 0;
     $offset = 0;
     $start = null;
@@ -159,13 +156,19 @@ function heron_prepare(string $code): string
         // The last statement has no semicolon.
         $statements[] = [$start, $lastSignificantEnd, $first, false, true];
     }
-    foreach (array_reverse($statements) as [$from, $to, $token, $terminated, $expression]) {
+    // Which statements are expressions: only the last of them becomes a result card.
+    $wrapped = [];
+    foreach ($statements as $n => [$from, $to, $token, $terminated, $expression]) {
         $id = is_array($token) ? $token[0] : null;
         $text = is_array($token) ? $token[1] : $token;
-        $wrap = $expression && $text !== '{' && !in_array($id, $skip, true);
+        $wrapped[$n] = $expression && $text !== '{' && !in_array($id, $skip, true);
+    }
+    $lastWrapped = array_key_last(array_filter($wrapped));
+    foreach (array_reverse($statements, true) as $n => [$from, $to, $token, $terminated, $expression]) {
         $line = substr_count(substr($code, 0, $from), "\n") + 1;
         $body = substr($code, $from, $to - $from);
-        $replacement = $wrap ? "heron_capture($line, ($body))" : $body;
+        $card = $n === $lastWrapped ? 'true' : 'false';
+        $replacement = $wrapped[$n] ? "heron_capture($line, ($body), $card)" : $body;
         if (!$terminated) {
             $replacement .= ';';
         }
@@ -174,14 +177,49 @@ function heron_prepare(string $code): string
     return $code;
 }
 
-/** Records a statement's value for the result, then hands it back unchanged. */
-function heron_capture(int $line, mixed $value): mixed
+/**
+ * A statement ran: its line gets a mark in the gutter; the last statement's value becomes a
+ * result card (unless a dump() on the same line already made one).
+ */
+function heron_capture(int $line, mixed $value, bool $card = false): mixed
 {
     global $heronResult;
-    if (count($heronResult['items']) < 500) {
+    if (count($heronResult['items']) >= 500) {
+        return $value;
+    }
+    $heronResult['items'][] = ['kind' => 'mark', 'line' => $line];
+    if ($card) {
+        foreach (array_reverse($heronResult['items']) as $item) {
+            if ($item['kind'] === 'value') {
+                if ($item['line'] === $line) {
+                    return $value;
+                }
+                break;
+            }
+        }
         $heronResult['items'][] = ['kind' => 'value', 'line' => $line, 'value' => heron_dump($value)];
     }
     return $value;
+}
+
+/** The line of the snippet that called dump(), found in the stack. */
+function heron_eval_line(): int
+{
+    foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
+        if (isset($frame['file']) && str_contains($frame['file'], "eval()'d code")) {
+            return (int) $frame['line'];
+        }
+    }
+    return 0;
+}
+
+/** dump() and dd() put their values into the results as cards. */
+function heron_dump_card(mixed $value): void
+{
+    global $heronResult;
+    if (count($heronResult['items']) < 500) {
+        $heronResult['items'][] = ['kind' => 'value', 'line' => heron_eval_line(), 'value' => heron_dump($value)];
+    }
 }
 
 register_shutdown_function(function () {
@@ -230,6 +268,28 @@ if ($heronRoot !== '') {
         $heronResult['error'] = ['class' => get_class($e), 'message' => $e->getMessage(), 'line' => null,
             'phase' => 'bootstrap', 'file' => $e->getFile() . ':' . $e->getLine()];
         heron_write($heronResult);
+        exit(1);
+    }
+}
+
+if (class_exists('Symfony\Component\VarDumper\VarDumper')) {
+    Symfony\Component\VarDumper\VarDumper::setHandler(function ($var) {
+        heron_dump_card($var);
+    });
+}
+if (!function_exists('dump')) {
+    function dump(mixed ...$vars)
+    {
+        foreach ($vars as $var) {
+            heron_dump_card($var);
+        }
+        return $vars[0] ?? null;
+    }
+}
+if (!function_exists('dd')) {
+    function dd(mixed ...$vars): never
+    {
+        dump(...$vars);
         exit(1);
     }
 }

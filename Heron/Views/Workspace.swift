@@ -1,7 +1,7 @@
 import AppKit
 import Observation
 
-/// The window's state: open tabs, the chosen one, recent projects and the run history.
+/// The window's state: open tabs, the chosen one, recent projects, history and snippets.
 @MainActor @Observable
 final class Workspace {
     private(set) var tabs: [Tab]
@@ -10,15 +10,15 @@ final class Workspace {
     }
     private(set) var recentProjects: [URL]
     let history = History()
-    let php: URL?
-    let phpVersion: String?
+    let snippets = SnippetStore()
     /// Why the snippet couldn't even start, when there's no PHP.
     private(set) var failure: String?
+    private var versions: [URL: String] = [:]
+
+    static let welcomeKey = "welcome.enabled"
 
     init() {
         let defaults = UserDefaults.standard
-        php = PHPBinary.find()
-        phpVersion = php.flatMap(PHPRunner.version(of:))
         recentProjects = (defaults.stringArray(forKey: "workspace.recent") ?? []).map { URL(filePath: $0) }
 
         var tabs: [Tab] = []
@@ -30,6 +30,10 @@ final class Workspace {
             let project = defaults.string(forKey: "workspace.project").map { URL(filePath: $0) }
             tabs = [Tab(code: code, project: project)]
         }
+        let wantsWelcome = defaults.object(forKey: Self.welcomeKey) == nil || defaults.bool(forKey: Self.welcomeKey)
+        if wantsWelcome, !tabs.contains(where: \.isWelcome) {
+            tabs.insert(Tab(isWelcome: true), at: 0)
+        }
         if tabs.isEmpty { tabs = [Tab()] }
         self.tabs = tabs
         let selected = defaults.string(forKey: "workspace.selected").flatMap(UUID.init)
@@ -40,21 +44,53 @@ final class Workspace {
         tabs.first { $0.id == selectedID } ?? tabs[0]
     }
 
+    // MARK: PHP
+
+    /// The PHP chosen in Settings, or the first one found on this Mac.
+    var php: URL? { PHPBinary.find() }
+
+    var phpVersion: String? {
+        guard let php else { return nil }
+        if let known = versions[php] { return known }
+        let version = PHPRunner.version(of: php)
+        if let version { versions[php] = version }
+        return version
+    }
+
+    func forgetVersions() { versions = [:] }
+
     // MARK: Tabs
 
-    @discardableResult
-    func newTab(code: String = "", project: URL? = nil) -> Tab {
-        let tab = Tab(code: code, project: project ?? selected.project)
+    /// ⌘T and "+": a Get started page, where the project (or plain PHP) is chosen first.
+    func newWelcomeTab() {
+        let tab = Tab(isWelcome: true)
         tabs.append(tab)
         selectedID = tab.id
+        save()
+    }
+
+    /// A code tab with this content. When the current tab is a Get started page it becomes that tab,
+    /// so choosing a project there doesn't leave the page behind.
+    @discardableResult
+    func newTab(code: String = "", project: URL? = nil, keepProject: Bool = true) -> Tab {
+        let tab = Tab(code: code, project: project ?? (keepProject && !selected.isWelcome ? selected.project : nil))
+        if let project { remember(project) }
+        if selected.isWelcome, let index = tabs.firstIndex(where: { $0.id == selectedID }) {
+            tabs[index] = tab
+        } else {
+            tabs.append(tab)
+        }
+        selectedID = tab.id
+        save()
         return tab
     }
 
-    /// Closes a tab; the last tab is emptied instead, so there's always one.
+    /// Closes a tab; the last code tab is emptied instead, so there's always one.
     func close(_ tab: Tab) {
         tab.stop()
-        guard tabs.count > 1, let index = tabs.firstIndex(where: { $0.id == tab.id }) else {
-            tabs[0].code = ""
+        guard let index = tabs.firstIndex(where: { $0.id == tab.id }) else { return }
+        if tabs.count == 1 {
+            if tab.isWelcome { tabs = [Tab()]; selectedID = tabs[0].id } else { tab.code = "" }
             save()
             return
         }
@@ -77,16 +113,25 @@ final class Workspace {
 
     // MARK: Projects
 
-    func chooseProject() {
+    func chooseProject(forNewTab: Bool = false) {
         let panel = NSOpenPanel()
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.message = String(localized: "Choose a PHP or Laravel project. Snippets run inside it.")
         panel.prompt = String(localized: "Choose")
-        if panel.runModal() == .OK, let url = panel.url { setProject(url) }
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        if forNewTab || selected.isWelcome {
+            newTab(project: url)
+        } else {
+            setProject(url)
+        }
     }
 
     func setProject(_ url: URL?) {
+        if selected.isWelcome {
+            newTab(project: url, keepProject: false)
+            return
+        }
         selected.project = url
         if let url { remember(url) }
         save()
@@ -100,6 +145,7 @@ final class Workspace {
     // MARK: Running
 
     func run(tidy: Bool, indent: String) {
+        guard !selected.isWelcome else { return }
         guard let php else {
             failure = RunnerError.noPHP.localizedDescription
             return

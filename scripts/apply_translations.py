@@ -9,7 +9,7 @@ root = pathlib.Path(__file__).resolve().parent.parent
 catalog_path = root / "Heron/Resources/Localizable.xcstrings"
 tr = json.loads((root / "scripts/translations_tr.json").read_text())
 catalog = json.loads(catalog_path.read_text())
-same_everywhere = {"", "→", "<1 ms", "Heron", "SQL", "PHP", "User::where('active', true)->count()"}
+same_everywhere = {"", "→", "=>", "%lld", "%lld pt", '"%@"', "%@ => ", "%@%@: ", "Heron - %@", "Laravel %@", "]", "}", "<1 ms", "Heron", "SQL", "PHP", "© 2026 Batuhan Haymana", "User::where('active', true)->count()"}
 
 missing = []
 for key, entry in catalog["strings"].items():

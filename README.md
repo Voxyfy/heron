@@ -21,14 +21,17 @@ Heron runs PHP snippets with the PHP already on your Mac (Laravel Herd or Homebr
 |---|---|---|
 | ▶️ | Run a snippet with ⌘R, stop it with ⌘. | Done |
 | 🧱 | Run inside a project; Laravel is booted automatically | Done |
-| 🌳 | The last line's value as an expandable tree; Eloquent models show attributes and relations | Done |
-| 🔴 | Errors and warnings shown at their line in the editor | Done |
+| 🌳 | Result cards for every `dump()` and the last statement, printed like a PHP debugger; Eloquent models show attributes and relations | Done |
+| 🔴 | Errors and warnings shown at their line in the editor; a mark in the gutter on every line that ran | Done |
 | 🧹 | Tidy code on run: indentation, spacing, one statement per line | Done |
 | ⚙️ | Editor settings: font, size, tabs or spaces, indent width, line wrap | Done |
 | 🌍 | English and Turkish | Done |
-| 🗂 | Tabs, history and saved snippets | Planned |
+| 🗂 | Tabs, history (⌘Y), saved snippets (⌘B, shareable per project), open-anything palette (⌘P), welcome tab | Done |
+| 📊 | Table view for lists of rows, with search and CSV export; database queries on demand | Done |
+| 🎨 | Five themes, dark by default | Done |
+| ✨ | Completion while typing: classes (with their `use` line), `->` and `::` members by reflection (columns, relations, scopes, facades), chains like `User::where()->first()->`, functions and variables; a chosen callable brings its required parameters as placeholders (Tab moves on); brackets and quotes pair up | Done |
 | 🔐 | Run on a server over SSH, or in a Docker container | Planned |
-| 📊 | Table view for query results, list of SQL queries | Planned |
+| 📜 | Log viewer | Planned |
 
 ## Requirements
 
@@ -70,7 +73,7 @@ python3 scripts/apply_translations.py   # lists keys still missing Turkish
 Heron/
   App/       App entry, menus (Code ▸ Run ⌘R, Stop ⌘.)
   Editor/    NSTextView editor: highlighting, indentation, line notes; editor settings
-  Runner/    PHPRunner (one php process per run), runner.php, format.php
+  Runner/    PHPRunner (one php process per run), runner.php, format.php, complete.php (reflection for the completion list)
   Views/     Main window, result panel, workspace state
 ```
 

@@ -1,37 +1,83 @@
 import SwiftUI
 
-/// Icon rail on the left, tabs on top, editor and results side by side (or stacked), status bar below.
+/// Icon rail on the left, tabs on top, editor and results stacked (or side by side), status bar below.
 struct MainWindow: View {
     @Bindable var workspace: Workspace
     @AppStorage(EditorSettings.fontName) private var fontName = EditorSettings.systemFont
-    @AppStorage(EditorSettings.fontSize) private var fontSize = 13.0
+    @AppStorage(EditorSettings.fontSize) private var fontSize = 15.0
     @AppStorage(EditorSettings.indentWidth) private var indentWidth = 4
     @AppStorage(EditorSettings.usesTabs) private var usesTabs = false
     @AppStorage(EditorSettings.wrapsLines) private var wrapsLines = true
     @AppStorage(EditorSettings.formatsOnRun) private var formatsOnRun = true
+    @AppStorage(Theme.key) private var themeID = Theme.defaultID
     @AppStorage("layout.stacked") private var stacked = true
-    @AppStorage("result.showsQueries") private var showsQueries = true
-    @State private var showsHistory = false
+    @AppStorage("layout.resultsHidden") private var resultsHidden = false
+    @AppStorage("result.showsQueries") private var showsQueries = false
+    @AppStorage("result.plain") private var plainOutput = false
+    @State private var sheet: Sheet?
+    @State private var table: DumpNode?
+
+    enum Sheet: Identifiable {
+        case history, snippets, saveSnippet(String), palette
+        var id: String {
+            switch self {
+            case .history: "history"
+            case .snippets: "snippets"
+            case .saveSnippet: "save"
+            case .palette: "palette"
+            }
+        }
+    }
+
+    private var theme: Theme { Theme.named(themeID) }
 
     var body: some View {
         HStack(spacing: 0) {
-            Rail(workspace: workspace, run: run, history: { showsHistory = true })
-            Divider()
+            Rail(workspace: workspace, run: run, history: { sheet = .history }, snippets: { sheet = .snippets })
             VStack(spacing: 0) {
                 TabBar(workspace: workspace)
-                Divider()
-                if stacked {
+                Rectangle().fill(theme.borderColor).frame(height: 1)
+                if workspace.selected.isWelcome {
+                    WelcomeView(workspace: workspace)
+                } else if resultsHidden || !workspace.selected.hasRun {
+                    // Nothing has run yet: the editor alone, like a fresh scratchpad.
+                    editor
+                } else if stacked {
                     VSplitView { editor; results }
                 } else {
                     HSplitView { editor; results }
                 }
-                Divider()
-                StatusBar(workspace: workspace)
+                Rectangle().fill(theme.borderColor).frame(height: 1)
+                StatusBar(workspace: workspace, resultsHidden: $resultsHidden)
             }
         }
+        .environment(\.theme, theme)
+        .background(theme.panelColor)
         .navigationTitle("Heron — \(workspace.selected.title)")
-        .sheet(isPresented: $showsHistory) { HistorySheet(workspace: workspace) }
-        .onReceive(NotificationCenter.default.publisher(for: .heronShowHistory)) { _ in showsHistory = true }
+        .sheet(item: $sheet) { which in
+            Group {
+                switch which {
+                case .history: HistorySheet(workspace: workspace)
+                case .snippets: SnippetsSheet(workspace: workspace)
+                case .saveSnippet(let code): SnippetsSheet(workspace: workspace, newCode: code)
+                case .palette: CommandPalette(workspace: workspace, perform: perform)
+                }
+            }
+            .environment(\.theme, theme)
+            .background(theme.backgroundColor)
+            .preferredColorScheme(theme.isDark ? .dark : .light)
+        }
+        .sheet(item: $table) { node in
+            TablePreview(node: node).environment(\.theme, theme).background(theme.backgroundColor)
+                .preferredColorScheme(theme.isDark ? .dark : .light)
+        }
+        .environment(\.openTable, OpenTable { node in table = node })
+        .onReceive(NotificationCenter.default.publisher(for: .heronShowHistory)) { _ in sheet = .history }
+        .onReceive(NotificationCenter.default.publisher(for: .heronShowSnippets)) { _ in sheet = .snippets }
+        .onReceive(NotificationCenter.default.publisher(for: .heronSaveSnippet)) { _ in
+            if !workspace.selected.isWelcome { sheet = .saveSnippet(workspace.selected.code) }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .heronShowPalette)) { _ in sheet = .palette }
         #if DEBUG
         // `-heron.runOnLaunch YES` runs the snippet once at launch, for screenshots and checks.
         .task {
@@ -40,21 +86,55 @@ struct MainWindow: View {
             }
         }
         #endif
-        .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                Button { showsQueries.toggle() } label: {
-                    Text("SQL")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundStyle(showsQueries ? Color.heron : .secondary)
-                }
-                .help(showsQueries ? String(localized: "Hide database queries") : String(localized: "Show database queries"))
-                Button { stacked.toggle() } label: {
-                    Label(String(localized: "Layout"), systemImage: stacked ? "rectangle.split.1x2" : "rectangle.split.2x1")
-                }
-                .help(stacked ? String(localized: "Show the result beside the code")
-                              : String(localized: "Show the result below the code"))
-            }
+        .toolbar(removing: .title)
+        .toolbarBackground(theme.panelColor, for: .windowToolbar)
+        .toolbarBackgroundVisibility(.visible, for: .windowToolbar)
+        .toolbarColorScheme(theme.isDark ? .dark : .light, for: .windowToolbar)
+        .toolbar { toolbarItems }
+    }
+
+    /// Title in the middle, then SQL, results style and layout on the right. On macOS 26 the
+    /// toolbar draws a glass pill behind items; the reference has none, so it is switched off.
+    @ToolbarContentBuilder
+    private var toolbarItems: some ToolbarContent {
+        if #available(macOS 26.0, *) {
+            ToolbarItem(placement: .principal) { titleView }.sharedBackgroundVisibility(.hidden)
+            ToolbarItemGroup(placement: .primaryAction) { actionButtons }.sharedBackgroundVisibility(.hidden)
+        } else {
+            ToolbarItem(placement: .principal) { titleView }
+            ToolbarItemGroup(placement: .primaryAction) { actionButtons }
         }
+    }
+
+    private var titleView: some View {
+        Text("Heron - \(workspace.selected.title)")
+            .font(.system(size: 13))
+            .foregroundStyle(theme.textColor)
+    }
+
+    @ViewBuilder
+    private var actionButtons: some View {
+        Button { showsQueries.toggle() } label: {
+            Text("SQL")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(showsQueries ? theme.accentColor : theme.textColor)
+        }
+        .help(showsQueries ? String(localized: "Hide database queries") : String(localized: "Show database queries"))
+        Button { plainOutput.toggle() } label: {
+            Image(systemName: "square.3.layers.3d")
+                .font(.system(size: 14))
+                .foregroundStyle(theme.accentColor)
+        }
+        .help(plainOutput ? String(localized: "Show results as cards") : String(localized: "Show results as plain output"))
+        Button { stacked.toggle() } label: {
+            Image(systemName: "chevron.left.forwardslash.chevron.right")
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(theme.textColor)
+                .frame(width: 22, height: 20)
+                .overlay(RoundedRectangle(cornerRadius: 4).strokeBorder(theme.textColor.opacity(0.8)))
+        }
+        .help(stacked ? String(localized: "Show the result beside the code")
+                      : String(localized: "Show the result below the code"))
     }
 
     private var editor: some View {
@@ -63,9 +143,11 @@ struct MainWindow: View {
                           notes: tab.notes,
                           font: EditorSettings.font(name: fontName, size: fontSize),
                           indentUnit: EditorSettings.indentUnit(tabs: usesTabs, width: indentWidth),
-                          wrapsLines: wrapsLines)
+                          wrapsLines: wrapsLines,
+                          theme: theme,
+                          project: tab.project)
             .id(tab.id)
-            .background(Color(nsColor: .textBackgroundColor))
+            .background(theme.backgroundColor)
             .frame(minWidth: 360, idealWidth: 560, minHeight: 160)
     }
 
@@ -77,90 +159,167 @@ struct MainWindow: View {
     private func run() {
         workspace.run(tidy: formatsOnRun, indent: EditorSettings.indentUnit(tabs: usesTabs, width: indentWidth))
     }
+
+    private func perform(_ action: CommandPalette.Action) {
+        switch action {
+        case .run: run()
+        case .stop: workspace.stop()
+        case .newTab: workspace.newWelcomeTab()
+        case .chooseProject: workspace.chooseProject()
+        case .plainPHP: workspace.setProject(nil)
+        case .history: sheet = .history
+        case .snippets: sheet = .snippets
+        case .settings: NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        case .toggleLayout: stacked.toggle()
+        case .toggleQueries: showsQueries.toggle()
+        case .openFolder(let url): workspace.newTab(project: url, keepProject: false)
+        case .openSnippet(let snippet):
+            workspace.newTab(code: snippet.code, project: snippet.project.map { URL(filePath: $0) } ?? workspace.selected.project,
+                             keepProject: true)
+        }
+    }
 }
 
 extension Notification.Name {
     static let heronShowHistory = Notification.Name("heron.showHistory")
+    static let heronShowSnippets = Notification.Name("heron.showSnippets")
+    static let heronSaveSnippet = Notification.Name("heron.saveSnippet")
+    static let heronShowPalette = Notification.Name("heron.showPalette")
 }
 
-/// The narrow column of actions on the left.
+/// Lets a result card open the table preview for its value.
+struct OpenTable: Sendable {
+    let open: @MainActor @Sendable (DumpNode) -> Void
+}
+
+private struct OpenTableKey: EnvironmentKey {
+    static let defaultValue = OpenTable { _ in }
+}
+
+extension EnvironmentValues {
+    var openTable: OpenTable {
+        get { self[OpenTableKey.self] }
+        set { self[OpenTableKey.self] = newValue }
+    }
+}
+
+/// The narrow column of actions on the left: Lucide icons, all the same size, on an even grid.
 private struct Rail: View {
     let workspace: Workspace
     let run: () -> Void
     let history: () -> Void
+    let snippets: () -> Void
+    @Environment(\.theme) private var theme
+    @State private var showsProjects = false
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 2) {
             if workspace.selected.isRunning {
-                RailButton(symbol: "stop.circle", help: String(localized: "Stop (⌘.)"), tint: .red) { workspace.stop() }
+                RailButton(icon: "lucide.circle-stop", help: String(localized: "Stop (⌘.)"), tint: .red) { workspace.stop() }
             } else {
-                RailButton(symbol: "play", help: String(localized: "Run (⌘R)"), action: run)
+                RailButton(icon: "lucide.play", help: String(localized: "Run (⌘R)"), action: run)
+                    .disabled(workspace.selected.isWelcome)
             }
-            Menu {
-                Button(String(localized: "Choose Project…")) { workspace.chooseProject() }
-                Button(String(localized: "No Project (Plain PHP)")) { workspace.setProject(nil) }
-                    .disabled(workspace.selected.project == nil)
-                if !workspace.recentProjects.isEmpty {
-                    Divider()
-                    ForEach(workspace.recentProjects, id: \.self) { url in
-                        Button(url.lastPathComponent) { workspace.setProject(url) }
-                    }
-                }
-            } label: {
-                Image(systemName: "folder")
-                    .font(.system(size: 19, weight: .light))
-                    .frame(width: 36, height: 36)
-            }
-            .menuStyle(.borderlessButton)
-            .menuIndicator(.hidden)
-            .fixedSize()
-            .help(String(localized: "Project (⌘O)"))
-            RailButton(symbol: "clock", help: String(localized: "History (⌘Y)"), action: history)
+            RailButton(icon: "lucide.folder-open", help: String(localized: "Project (⌘O)")) { showsProjects.toggle() }
+                .popover(isPresented: $showsProjects, arrowEdge: .trailing) { projectList }
+            RailButton(icon: "lucide.clock", help: String(localized: "History (⌘Y)"), action: history)
+            RailButton(icon: "lucide.bookmark", help: String(localized: "Snippets (⌘B)"), action: snippets)
             Spacer()
             SettingsLink {
-                Image(systemName: "gearshape").font(.system(size: 19, weight: .light)).frame(width: 36, height: 36)
+                RailIcon(name: "lucide.settings", tint: theme.textColor.opacity(0.85))
             }
-            .buttonStyle(.borderless)
+            .buttonStyle(.plain)
             .help(String(localized: "Settings"))
         }
-        .foregroundStyle(.secondary)
-        .padding(.vertical, 6)
-        .frame(width: 46)
-        .background(Color(nsColor: .textBackgroundColor))
+        .padding(.top, 8)
+        .padding(.bottom, 6)
+        .frame(width: 52)
+        .background(theme.panelColor)
+        .overlay(alignment: .trailing) { Rectangle().fill(theme.borderColor).frame(width: 1) }
+    }
+
+    private var projectList: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            projectRow(String(localized: "Choose Project…"), symbol: "folder.badge.plus") { workspace.chooseProject() }
+            projectRow(String(localized: "No Project (Plain PHP)"), symbol: "terminal") { workspace.setProject(nil) }
+                .disabled(workspace.selected.project == nil)
+            if !workspace.recentProjects.isEmpty {
+                Divider().padding(.vertical, 4)
+                ForEach(workspace.recentProjects, id: \.self) { url in
+                    projectRow(url.lastPathComponent, symbol: "folder") { workspace.setProject(url) }
+                }
+            }
+        }
+        .padding(8)
+        .frame(minWidth: 240)
+    }
+
+    private func projectRow(_ title: String, symbol: String, action: @escaping () -> Void) -> some View {
+        Button {
+            showsProjects = false
+            action()
+        } label: {
+            Label(title, systemImage: symbol).frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .padding(.vertical, 5)
+        .padding(.horizontal, 8)
+    }
+}
+
+/// A Lucide icon from Icons.xcassets, drawn in one color.
+private struct RailIcon: View {
+    let name: String
+    let tint: Color
+
+    var body: some View {
+        Image(name)
+            .renderingMode(.template)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 26, height: 26)
+            .foregroundStyle(tint)
+            .frame(width: 52, height: 46)
+            .contentShape(Rectangle())
     }
 }
 
 private struct RailButton: View {
-    let symbol: String
+    let icon: String
     let help: String
-    var tint: Color = .secondary
+    var tint: Color? = nil
     let action: () -> Void
+    @Environment(\.theme) private var theme
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: symbol)
-                .font(.system(size: 19, weight: .light))
-                .foregroundStyle(tint)
-                .frame(width: 36, height: 36)
-                .contentShape(Rectangle())
+            RailIcon(name: icon, tint: tint ?? theme.textColor.opacity(0.85))
         }
-        .buttonStyle(.borderless)
+        .buttonStyle(.plain)
         .help(help)
     }
 }
 
-/// Framework, PHP version and the last run's time and memory, then the project's path.
+/// Framework, PHP version and the last run's time and memory; on the right, the project's
+/// path and a chevron that hides or shows the results.
 private struct StatusBar: View {
     let workspace: Workspace
+    @Binding var resultsHidden: Bool
+    @Environment(\.theme) private var theme
 
     var body: some View {
         let tab = workspace.selected
         HStack(spacing: 0) {
             if let result = tab.result, result.kind == .laravel, let version = result.framework {
-                segment("Laravel \(version)")
+                HStack(spacing: 6) {
+                    Text("Laravel \(version)").foregroundStyle(theme.textColor)
+                    Image(systemName: "info.circle.fill").font(.system(size: 9)).foregroundStyle(theme.accentColor)
+                }
+                .padding(.horizontal, 12)
+                Rectangle().fill(theme.borderColor).frame(width: 1, height: 14)
             }
             segment(workspace.phpVersion.map { "PHP \($0)" } ?? String(localized: "PHP not found"),
-                    color: workspace.phpVersion == nil ? .red : .secondary)
+                    color: workspace.phpVersion == nil ? .red : theme.mutedColor)
             if let result = tab.result, let ms = result.milliseconds {
                 let time = ms < 1 ? "<1 ms" : String(format: "%.0f ms", ms)
                 let memory = result.memory.map { " / " + ByteCountFormatter.string(fromByteCount: Int64($0), countStyle: .memory) } ?? ""
@@ -168,21 +327,38 @@ private struct StatusBar: View {
             }
             Spacer()
             Text(tab.project.map { ($0.path(percentEncoded: false) as NSString).abbreviatingWithTildeInPath }
-                 ?? String(localized: "Plain PHP"))
+                 ?? (tab.isWelcome ? "" : String(localized: "Plain PHP")))
                 .lineLimit(1)
                 .truncationMode(.head)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(theme.mutedColor)
                 .padding(.horizontal, 12)
+            if !tab.isWelcome {
+                Rectangle().fill(theme.borderColor).frame(width: 1, height: 14)
+                Image(systemName: tab.result?.error == nil ? "checkmark.circle" : "xmark.circle")
+                    .font(.system(size: 12))
+                    .foregroundStyle(tab.result?.error == nil ? theme.mutedColor : .red)
+                    .frame(width: 34, height: 24)
+                Rectangle().fill(theme.borderColor).frame(width: 1, height: 14)
+                Button { resultsHidden.toggle() } label: {
+                    Image(systemName: resultsHidden ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .frame(width: 30, height: 24)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderless)
+                .foregroundStyle(theme.mutedColor)
+                .help(resultsHidden ? String(localized: "Show results") : String(localized: "Hide results"))
+            }
         }
         .font(.system(size: 11, design: .monospaced))
         .frame(height: 26)
-        .background(Color.heronPanel)
+        .background(theme.panelColor)
     }
 
-    private func segment(_ text: String, color: Color = .secondary) -> some View {
+    private func segment(_ text: String, color: Color? = nil) -> some View {
         HStack(spacing: 0) {
-            Text(text).foregroundStyle(color).padding(.horizontal, 12)
-            Divider().frame(height: 14)
+            Text(text).foregroundStyle(color ?? theme.textColor).padding(.horizontal, 12)
+            Rectangle().fill(theme.borderColor).frame(width: 1, height: 14)
         }
     }
 }

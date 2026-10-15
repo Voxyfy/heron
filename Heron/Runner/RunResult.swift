@@ -22,7 +22,10 @@ struct RunResult: Decodable, Sendable {
 
     /// What the snippet produced, in order: a statement's value or a database query.
     enum Item: Decodable, Sendable {
+        /// A result card: a dump() call, or the last statement's value.
         case value(line: Int, DumpNode)
+        /// A statement ran on this line (a mark in the gutter).
+        case mark(line: Int)
         case query(sql: String, milliseconds: Double?, connection: String?)
 
         private enum CodingKeys: String, CodingKey { case kind, line, value, sql, milliseconds, connection }
@@ -34,6 +37,8 @@ struct RunResult: Decodable, Sendable {
                 self = .query(sql: try c.decode(String.self, forKey: .sql),
                               milliseconds: try c.decodeIfPresent(Double.self, forKey: .milliseconds),
                               connection: try c.decodeIfPresent(String.self, forKey: .connection))
+            case "mark":
+                self = .mark(line: try c.decode(Int.self, forKey: .line))
             default:
                 self = .value(line: try c.decode(Int.self, forKey: .line), try c.decode(DumpNode.self, forKey: .value))
             }
@@ -75,6 +80,7 @@ final class DumpNode: Decodable, Sendable, Identifiable {
     let `class`: String?
     let count: Int?
     let length: Int?
+    let oid: Int?
     let children: [Child]?
 
     var id: ObjectIdentifier { ObjectIdentifier(self) }
@@ -99,4 +105,70 @@ final class DumpNode: Decodable, Sendable, Identifiable {
         return text.count > 90 ? String(text.prefix(89)) + "…" : text
     }
     var isContainer: Bool { children?.isEmpty == false }
+
+    /// A list of rows with keys (a collection of models, an array of arrays): shown as a table too.
+    var isTabular: Bool {
+        guard let children, children.count >= 1, children.count <= 5000 else { return false }
+        return children.allSatisfy { ["array", "object"].contains($0.value.type) && $0.value.isContainer }
+    }
+
+    /// Column names across all rows, in first-seen order.
+    var tableColumns: [String] {
+        var seen: [String] = []
+        for row in children ?? [] {
+            for cell in row.value.children ?? [] where !seen.contains(cell.key) { seen.append(cell.key) }
+        }
+        return seen
+    }
+
+    func tableRows() -> [[String: String]] {
+        (children ?? []).map { row in
+            Dictionary((row.value.children ?? []).map { ($0.key, $0.value.cellText) }, uniquingKeysWith: { first, _ in first })
+        }
+    }
+
+    /// The value the way PHP debuggers print it: one numbered line per row, indented by depth.
+    func plainLines(key: String? = nil, kind: String? = nil, inArray: Bool = false, depth: Int = 0) -> [PlainLine] {
+        let prefix: String
+        if let key {
+            let mark = kind == "protected" ? "#" : kind == "private" ? "-" : ""
+            prefix = inArray ? "\(key) => " : "\(mark)\(key): "
+        } else {
+            prefix = ""
+        }
+        switch type {
+        case "object":
+            let name = `class` ?? "object"
+            guard let children, !children.isEmpty else { return [PlainLine(depth: depth, text: prefix + name + " {#\(oid ?? 0)}")] }
+            var lines = [PlainLine(depth: depth, text: prefix + name + " {#\(oid ?? 0)")]
+            for child in children {
+                lines += child.value.plainLines(key: child.key, kind: child.kind, inArray: false, depth: depth + 1)
+            }
+            return lines + [PlainLine(depth: depth, text: "}")]
+        case "array":
+            guard let children, !children.isEmpty else { return [PlainLine(depth: depth, text: prefix + "[]")] }
+            var lines = [PlainLine(depth: depth, text: prefix + "array:\(count ?? children.count) [")]
+            for child in children {
+                lines += child.value.plainLines(key: child.key, kind: nil, inArray: true, depth: depth + 1)
+            }
+            return lines + [PlainLine(depth: depth, text: "]")]
+        case "string":
+            return [PlainLine(depth: depth, text: prefix + "\"" + summary + "\"")]
+        default:
+            return [PlainLine(depth: depth, text: prefix + summary)]
+        }
+    }
+
+    private var cellText: String {
+        switch type {
+        case "array": "array (\(count ?? 0))"
+        case "object": shortClass ?? summary
+        default: summary
+        }
+    }
+}
+
+struct PlainLine: Sendable {
+    let depth: Int
+    let text: String
 }

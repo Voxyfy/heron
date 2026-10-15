@@ -4,6 +4,28 @@
     "": {
       "shouldTranslate": false
     },
+    "\"%@\"": {
+      "shouldTranslate": false
+    },
+    "%@ => ": {
+      "shouldTranslate": false
+    },
+    "%@%@: ": {
+      "shouldTranslate": false
+    },
+    "%lld": {
+      "shouldTranslate": false
+    },
+    "%lld entries": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kayıt"
+          }
+        }
+      }
+    },
     "%lld ms": {
       "extractionState": "stale",
       "localizations": {
@@ -15,6 +37,9 @@
         }
       }
     },
+    "%lld pt": {
+      "shouldTranslate": false
+    },
     "%lld spaces": {
       "localizations": {
         "tr": {
@@ -25,12 +50,62 @@
         }
       }
     },
+    "A PHP and Laravel scratchpad for macOS, by Voxyfy.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voxyfy'dan, macOS için bir PHP ve Laravel karalama defteri."
+          }
+        }
+      }
+    },
+    "A scratchpad with no project, just the PHP on your Mac.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projesiz bir karalama defteri; yalnızca Mac'inizdeki PHP."
+          }
+        }
+      }
+    },
+    "About": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hakkında"
+          }
+        }
+      }
+    },
+    "All": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümü"
+          }
+        }
+      }
+    },
     "All Projects": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Tüm Projeler"
+          }
+        }
+      }
+    },
+    "Any project": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herhangi bir proje"
           }
         }
       }
@@ -46,6 +121,7 @@
       }
     },
     "Behavior": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
@@ -81,6 +157,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bir PHP ya da Laravel projesi seçin. Kod parçaları bu projenin içinde çalışır."
+          }
+        }
+      }
+    },
+    "Choose a snippet, or save the current code as one.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir kod parçası seçin ya da mevcut kodu kod parçası olarak kaydedin."
+          }
+        }
+      }
+    },
+    "Choose the php executable to run snippets with.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod parçalarını çalıştıracak php programını seçin."
+          }
+        }
+      }
+    },
+    "Choose…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seç…"
           }
         }
       }
@@ -135,6 +241,37 @@
         }
       }
     },
+    "Code you saved earlier, for any project or this one.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha önce kaydettiğiniz kod; her proje ya da yalnızca bu proje için."
+          }
+        }
+      }
+    },
+    "Command": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Komut"
+          }
+        }
+      }
+    },
+    "Connect to a server… (soon)": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir sunucuya bağlanın… (yakında)"
+          }
+        }
+      }
+    },
     "Couldn't run": {
       "localizations": {
         "tr": {
@@ -146,11 +283,42 @@
       }
     },
     "Dark": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Koyu"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sil"
+          }
+        }
+      }
+    },
+    "Description": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açıklama"
+          }
+        }
+      }
+    },
+    "Editor": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editör"
           }
         }
       }
@@ -165,6 +333,37 @@
         }
       }
     },
+    "End a line with //? to see its value in the editor, or add /*?->count()*/ after an expression.": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir satırın değerini editörde görmek için satır sonuna //? yazın ya da bir ifadenin ardına /*?->count()*/ ekleyin."
+          }
+        }
+      }
+    },
+    "Esc closes": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esc kapatır"
+          }
+        }
+      }
+    },
+    "Export CSV": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV Dışa Aktar"
+          }
+        }
+      }
+    },
     "Font": {
       "localizations": {
         "tr": {
@@ -175,7 +374,30 @@
         }
       }
     },
+    "General": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel"
+          }
+        }
+      }
+    },
+    "Get started": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlangıç"
+          }
+        }
+      }
+    },
     "Heron": {
+      "shouldTranslate": false
+    },
+    "Heron - %@": {
       "shouldTranslate": false
     },
     "Heron — %@": {
@@ -188,12 +410,32 @@
         }
       }
     },
+    "Hi there!": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Merhaba!"
+          }
+        }
+      }
+    },
     "Hide database queries": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Veritabanı sorgularını gizle"
+          }
+        }
+      }
+    },
+    "Hide results": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuçları gizle"
           }
         }
       }
@@ -228,7 +470,18 @@
         }
       }
     },
+    "Hit ENTER to open up an entry and ESC to clear the search or close the window.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir öğeyi açmak için ENTER'a, aramayı temizlemek ya da pencereyi kapatmak için ESC'ye basın."
+          }
+        }
+      }
+    },
     "Indent width": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
@@ -239,6 +492,7 @@
       }
     },
     "Indent with": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
@@ -258,7 +512,31 @@
         }
       }
     },
+    "Insert (⏎)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekle (⏎)"
+          }
+        }
+      }
+    },
+    "Laravel %@": {
+      "shouldTranslate": false
+    },
+    "Laravel and plain PHP projects. Models, config and the database come along.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laravel ve düz PHP projeleri. Modeller, ayarlar ve veritabanı birlikte gelir."
+          }
+        }
+      }
+    },
     "Layout": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
@@ -268,7 +546,18 @@
         }
       }
     },
+    "Leave empty to use Laravel Herd or Homebrew's PHP automatically.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş bırakırsanız Laravel Herd ya da Homebrew'un PHP'si kendiliğinden kullanılır."
+          }
+        }
+      }
+    },
     "Light": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
@@ -289,11 +578,22 @@
       }
     },
     "Match System": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Sisteme Uy"
+          }
+        }
+      }
+    },
+    "New Snippet": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Kod Parçası"
           }
         }
       }
@@ -314,6 +614,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yeni Sekme (⌘T)"
+          }
+        }
+      }
+    },
+    "New tab": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni sekme"
+          }
+        }
+      }
+    },
+    "No PHP found": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PHP bulunamadı"
           }
         }
       }
@@ -349,6 +669,16 @@
         }
       }
     },
+    "Nothing matches.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eşleşen bir şey yok."
+          }
+        }
+      }
+    },
     "Open": {
       "localizations": {
         "tr": {
@@ -359,12 +689,103 @@
         }
       }
     },
+    "Open Anything…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her Şeyi Aç…"
+          }
+        }
+      }
+    },
+    "Open History": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmişi Aç"
+          }
+        }
+      }
+    },
+    "Open Project Folder…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proje Klasörü Aç…"
+          }
+        }
+      }
+    },
+    "Open Settings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarları Aç"
+          }
+        }
+      }
+    },
+    "Open Snippets": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod Parçalarını Aç"
+          }
+        }
+      }
+    },
+    "Open a project": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proje aç"
+          }
+        }
+      }
+    },
+    "Open a project folder…": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir proje klasörü açın…"
+          }
+        }
+      }
+    },
+    "Open anything": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her şeyi aç"
+          }
+        }
+      }
+    },
     "Open in New Tab": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Yeni Sekmede Aç"
+          }
+        }
+      }
+    },
+    "Opens an empty tab (⌘T)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş bir sekme açar (⌘T)"
           }
         }
       }
@@ -381,6 +802,16 @@
     },
     "PHP": {
       "shouldTranslate": false
+    },
+    "PHP Binary": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PHP Programı"
+          }
+        }
+      }
     },
     "PHP isn't installed. Install it with Laravel Herd or Homebrew (brew install php).": {
       "localizations": {
@@ -422,6 +853,26 @@
         }
       }
     },
+    "PHP, editor, themes (⌘,)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PHP, editör, temalar (⌘,)"
+          }
+        }
+      }
+    },
+    "Pick a project, write a few lines of PHP, press ⌘R.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir proje seçin, birkaç satır PHP yazın, ⌘R'ye basın."
+          }
+        }
+      }
+    },
     "Plain PHP": {
       "localizations": {
         "tr": {
@@ -443,7 +894,6 @@
       }
     },
     "Project": {
-      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
@@ -463,6 +913,26 @@
         }
       }
     },
+    "Recent": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son"
+          }
+        }
+      }
+    },
+    "Recent folders": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son klasörler"
+          }
+        }
+      }
+    },
     "Result": {
       "extractionState": "stale",
       "localizations": {
@@ -470,6 +940,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sonuç"
+          }
+        }
+      }
+    },
+    "Result below or beside the code": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuç kodun altında ya da yanında"
           }
         }
       }
@@ -505,8 +985,68 @@
         }
       }
     },
+    "Runs snippets inside a project (⌘O)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod parçalarını bir projenin içinde çalıştırır (⌘O)"
+          }
+        }
+      }
+    },
+    "Runs the snippet (⌘R)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod parçasını çalıştırır (⌘R)"
+          }
+        }
+      }
+    },
+    "Runs without a project": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proje olmadan çalıştırır"
+          }
+        }
+      }
+    },
     "SQL": {
       "shouldTranslate": false
+    },
+    "Save Snippet": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod Parçasını Kaydet"
+          }
+        }
+      }
+    },
+    "Save as Snippet…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod Parçası Olarak Kaydet…"
+          }
+        }
+      }
+    },
+    "Saved code (⌘B)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kayıtlı kod (⌘B)"
+          }
+        }
+      }
     },
     "Search": {
       "localizations": {
@@ -514,6 +1054,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ara"
+          }
+        }
+      }
+    },
+    "Search…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ara…"
           }
         }
       }
@@ -528,12 +1078,72 @@
         }
       }
     },
+    "Show as table": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tablo olarak göster"
+          }
+        }
+      }
+    },
     "Show database queries": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Veritabanı sorgularını göster"
+          }
+        }
+      }
+    },
+    "Show or hide database queries": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veritabanı sorgularını göster ya da gizle"
+          }
+        }
+      }
+    },
+    "Show results": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuçları göster"
+          }
+        }
+      }
+    },
+    "Show results as cards": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuçları kart olarak göster"
+          }
+        }
+      }
+    },
+    "Show results as plain output": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuçları düz çıktı olarak göster"
+          }
+        }
+      }
+    },
+    "Show the Get started tab when Heron opens.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron açılınca Başlangıç sekmesini göster."
           }
         }
       }
@@ -559,11 +1169,42 @@
       }
     },
     "Size": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Boyut"
+          }
+        }
+      }
+    },
+    "Snippet": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod parçası"
+          }
+        }
+      }
+    },
+    "Snippets": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod Parçaları"
+          }
+        }
+      }
+    },
+    "Snippets (⌘B)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod Parçaları (⌘B)"
           }
         }
       }
@@ -579,12 +1220,43 @@
         }
       }
     },
+    "Snippets that ran before (⌘Y)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha önce çalışan kod parçaları (⌘Y)"
+          }
+        }
+      }
+    },
+    "Snippets…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod Parçaları…"
+          }
+        }
+      }
+    },
     "Spaces": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Boşluk"
+          }
+        }
+      }
+    },
+    "Start with plain PHP": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düz PHP ile başlayın"
           }
         }
       }
@@ -609,12 +1281,32 @@
         }
       }
     },
+    "Stored in the project's .heron/snippets folder": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projenin .heron/snippets klasöründe saklanır"
+          }
+        }
+      }
+    },
     "System (SF Mono)": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Sistem (SF Mono)"
+          }
+        }
+      }
+    },
+    "Table Preview": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tablo Önizleme"
           }
         }
       }
@@ -650,6 +1342,7 @@
       }
     },
     "Theme": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
@@ -659,12 +1352,94 @@
         }
       }
     },
+    "Themes color the editor, the results and the window.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temalar editörü, sonuçları ve pencereyi renklendirir."
+          }
+        }
+      }
+    },
+    "Tidy code when running": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalıştırırken kodu düzenle"
+          }
+        }
+      }
+    },
     "Tidy code when running (⌘R)": {
+      "extractionState": "stale",
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Çalıştırırken kodu düzenle (⌘R)"
+          }
+        }
+      }
+    },
+    "Tips": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İpuçları"
+          }
+        }
+      }
+    },
+    "Title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlık"
+          }
+        }
+      }
+    },
+    "Toggle Layout": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yerleşimi Değiştir"
+          }
+        }
+      }
+    },
+    "Toggle SQL Queries": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SQL Sorgularını Aç/Kapat"
+          }
+        }
+      }
+    },
+    "Untitled": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adsız"
+          }
+        }
+      }
+    },
+    "Use Plain PHP": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düz PHP Kullan"
           }
         }
       }
@@ -683,12 +1458,38 @@
         }
       }
     },
+    "Version %@ (%@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Version %1$@ (%2$@)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sürüm %1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "Warning": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Uyarı"
+          }
+        }
+      }
+    },
+    "Welcome Tab": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karşılama Sekmesi"
           }
         }
       }
@@ -703,8 +1504,57 @@
         }
       }
     },
-    "→": {
+    "]": {
       "shouldTranslate": false
+    },
+    "}": {
+      "shouldTranslate": false
+    },
+    "© 2026 Batuhan Haymana": {
+      "shouldTranslate": false
+    },
+    "⌘P opens anything: recent folders, snippets, commands.": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘P her şeyi açar: son klasörler, kod parçaları, komutlar."
+          }
+        }
+      }
+    },
+    "⌘R first fixes indentation and spacing, like a formatter.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘R önce girinti ve boşlukları bir biçimlendirici gibi düzeltir."
+          }
+        }
+      }
+    },
+    "⌘R runs the snippet. The last line's value shows up on the right, every statement's value in the result list.": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘R kod parçasını çalıştırır. Son satırın değeri satırın yanında, her ifadenin değeri sonuç listesinde görünür."
+          }
+        }
+      }
+    },
+    "⏎ opens · ↑↓ move · esc closes · / folders · # snippets": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏎ açar · ↑↓ gezer · esc kapatır · / klasörler · # kod parçaları"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

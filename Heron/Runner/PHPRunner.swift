@@ -1,7 +1,14 @@
 import Foundation
 
-/// Finds a PHP binary on this Mac: Herd first, then Homebrew, then the system.
+/// Finds a PHP binary on this Mac: the one chosen in Settings, else Herd, Homebrew, the system.
 enum PHPBinary {
+    static let customKey = "php.path"
+
+    static var custom: URL? {
+        guard let path = UserDefaults.standard.string(forKey: customKey), !path.isEmpty else { return nil }
+        return URL(filePath: path)
+    }
+
     static var candidates: [URL] {
         let home = FileManager.default.homeDirectoryForCurrentUser
         return [
@@ -13,7 +20,7 @@ enum PHPBinary {
     }
 
     static func find() -> URL? {
-        candidates.first { FileManager.default.isExecutableFile(atPath: $0.path(percentEncoded: false)) }
+        ([custom].compactMap { $0 } + candidates).first { FileManager.default.isExecutableFile(atPath: $0.path(percentEncoded: false)) }
     }
 }
 
@@ -76,12 +83,12 @@ enum PHPRunner {
 
     /// Tidies a snippet with format.php: indentation, spaces around operators and after commas,
     /// one statement per line. Returns the snippet unchanged if anything goes wrong.
-    static func format(_ code: String, indent: String, php: URL) async -> String {
+    static func format(_ code: String, indent: String, quotes: String = "double", php: URL) async -> String {
         guard let script = Bundle.main.url(forResource: "format", withExtension: "php") else { return code }
         return await Task.detached {
             let process = Process()
             process.executableURL = php
-            process.arguments = [script.path(percentEncoded: false), indent == "\t" ? "tab" : String(indent.count)]
+            process.arguments = [script.path(percentEncoded: false), indent == "\t" ? "tab" : String(indent.count), quotes]
             let input = Pipe(), output = Pipe()
             process.standardInput = input
             process.standardOutput = output
