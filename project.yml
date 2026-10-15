@@ -1,0 +1,55 @@
+name: Heron
+options:
+  bundleIdPrefix: com.voxyfy
+  developmentLanguage: en
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: 4U5QVH3U6A
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_HARDENED_RUNTIME: YES
+targets:
+  Heron:
+    type: application
+    platform: macOS
+    sources:
+      - Heron
+    entitlements:
+      path: Heron/Resources/Heron.entitlements
+      properties: {}
+    info:
+      path: Heron/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Heron
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations: [en, tr]
+        LSApplicationCategoryType: public.app-category.developer-tools
+        LSMinimumSystemVersion: "15.0"
+  HeronTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - HeronTests
+    dependencies:
+      - target: Heron
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  Heron:
+    build:
+      targets:
+        Heron: all
+        HeronTests: [test]
+    test:
+      targets:
+        - HeronTests
