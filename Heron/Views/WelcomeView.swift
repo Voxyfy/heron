@@ -19,16 +19,16 @@ struct WelcomeView: View {
                     }
                 }
                 HStack(spacing: 16) {
-                    StartCard(icon: "lucide.square-terminal", title: String(localized: "Plain PHP"),
+                    StartCard(icon: "tabler.square-terminal", title: String(localized: "Plain PHP"),
                               detail: String(localized: "A scratchpad with no project, just the PHP on your Mac."),
                               shortcut: nil) { workspace.newTab(project: nil, keepProject: false) }
-                    StartCard(icon: "lucide.folder-open", title: String(localized: "Open a project"),
+                    StartCard(icon: "tabler.folder-open", title: String(localized: "Open a project"),
                               detail: String(localized: "Laravel and plain PHP projects. Models, config and the database come along."),
                               shortcut: "⌘O") { workspace.chooseProject(forNewTab: true) }
-                    StartCard(icon: "lucide.server", title: String(localized: "Connect to a server"),
+                    StartCard(icon: "tabler.server", title: String(localized: "Connect to a server"),
                               detail: String(localized: "Run snippets on a remote project over SSH, inside its own PHP."),
                               shortcut: "⌘⇧K") { NotificationCenter.default.post(name: .heronShowConnections, object: nil) }
-                    StartCard(icon: "lucide.bookmark", title: String(localized: "Snippets"),
+                    StartCard(icon: "tabler.bookmark", title: String(localized: "Snippets"),
                               detail: String(localized: "Code you saved earlier, for any project or this one."),
                               shortcut: "⌘B") { NotificationCenter.default.post(name: .heronShowSnippets, object: nil) }
                 }
@@ -125,7 +125,7 @@ private struct RecentRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
-                Image("lucide.folder-open").renderingMode(.template).resizable().aspectRatio(contentMode: .fit)
+                Image("tabler.folder-open").renderingMode(.template).resizable().aspectRatio(contentMode: .fit)
                     .frame(width: 16, height: 16).foregroundStyle(theme.mutedColor)
                 Text(url.lastPathComponent).foregroundStyle(theme.textColor)
                 Spacer()

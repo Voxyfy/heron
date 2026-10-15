@@ -225,7 +225,7 @@ struct ConnectionsSheet: View {
             }
         } else {
             VStack(spacing: 10) {
-                Image("lucide.server").renderingMode(.template).resizable().aspectRatio(contentMode: .fit)
+                Image("tabler.server").renderingMode(.template).resizable().aspectRatio(contentMode: .fit)
                     .frame(width: 34, height: 34).foregroundStyle(.tertiary)
                 Text(String(localized: "Choose a server, or add one.")).foregroundStyle(.secondary)
                 Text(String(localized: "Snippets run on the server over SSH, inside the project folder you give."))

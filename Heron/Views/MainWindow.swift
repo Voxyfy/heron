@@ -244,23 +244,23 @@ private struct Rail: View {
     var body: some View {
         VStack(spacing: 2) {
             if workspace.selected.isRunning {
-                RailButton(icon: "lucide.circle-stop", help: String(localized: "Stop (⌘.)"), tint: .red) { workspace.stop() }
+                RailButton(icon: "tabler.circle-stop", help: String(localized: "Stop (⌘.)"), tint: .red) { workspace.stop() }
             } else {
-                RailButton(icon: "lucide.play", help: String(localized: "Run (⌘R)"), action: run)
+                RailButton(icon: "tabler.play", help: String(localized: "Run (⌘R)"), action: run)
                     .disabled(workspace.selected.isWelcome)
             }
-            RailButton(icon: "lucide.folder-open", help: String(localized: "Project (⌘O)")) { showsProjects.toggle() }
+            RailButton(icon: "tabler.folder-open", help: String(localized: "Project (⌘O)")) { showsProjects.toggle() }
                 .popover(isPresented: $showsProjects, arrowEdge: .trailing) { projectList }
-            RailButton(icon: "lucide.server", help: String(localized: "Servers (⌘⇧K)"),
+            RailButton(icon: "tabler.server", help: String(localized: "Servers (⌘⇧K)"),
                        tint: workspace.selected.isRemote ? theme.accentColor : nil) { showsServers.toggle() }
                 .popover(isPresented: $showsServers, arrowEdge: .trailing) { serverList }
-            RailButton(icon: "lucide.clock", help: String(localized: "History (⌘Y)"), action: history)
-            RailButton(icon: "lucide.bookmark", help: String(localized: "Snippets (⌘B)"), action: snippets)
-            RailButton(icon: "lucide.file-text", help: String(localized: "Logs (⌘L)"), action: logs)
+            RailButton(icon: "tabler.clock", help: String(localized: "History (⌘Y)"), action: history)
+            RailButton(icon: "tabler.bookmark", help: String(localized: "Snippets (⌘B)"), action: snippets)
+            RailButton(icon: "tabler.file-text", help: String(localized: "Logs (⌘L)"), action: logs)
                 .disabled(workspace.selected.project == nil && !workspace.selected.isRemote)
             Spacer()
             SettingsLink {
-                RailIcon(name: "lucide.settings", tint: theme.textColor.opacity(0.85))
+                RailIcon(name: "tabler.settings", tint: theme.textColor.opacity(0.85))
             }
             .buttonStyle(.plain)
             .help(String(localized: "Settings"))
