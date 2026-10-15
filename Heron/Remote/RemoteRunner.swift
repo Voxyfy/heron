@@ -106,6 +106,20 @@ enum RemoteRunner {
         return version
     }
 
+    /// Runs a shell command for its stdout: the log viewer's `ls` and `tail`.
+    static func output(of command: String, on connection: RemoteConnection, credential: Credential) async throws -> String {
+        let client = try await connect(connection, credential: credential)
+        let stdout: String
+        do {
+            (stdout, _) = try await execute(command, on: client)
+        } catch {
+            try? await client.close()
+            throw error
+        }
+        try? await client.close()
+        return stdout
+    }
+
     /// Runs one command on an exec channel (the login shell interprets it, no pty, so nothing is
     /// echoed back) and collects what it printed; a non-zero exit is not an error here.
     private static func execute(_ command: String, on client: SSHClient) async throws -> (String, String) {

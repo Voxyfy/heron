@@ -14,7 +14,7 @@ struct CommandPalette: View {
     enum Action {
         case run, stop, newTab, chooseProject, plainPHP, history, snippets, settings, toggleLayout, toggleQueries
         case openFolder(URL), openSnippet(Snippet)
-        case connections, connect(RemoteConnection)
+        case connections, connect(RemoteConnection), logs
     }
 
     private struct Entry: Identifiable {
@@ -36,6 +36,7 @@ struct CommandPalette: View {
             (String(localized: "Open History"), String(localized: "Snippets that ran before (⌘Y)"), "clock", .history),
             (String(localized: "Open Snippets"), String(localized: "Saved code (⌘B)"), "bookmark", .snippets),
             (String(localized: "Open Settings"), String(localized: "PHP, editor, themes (⌘,)"), "gearshape", .settings),
+            (String(localized: "Open Logs"), String(localized: "The project's storage/logs (⌘L)"), "doc.text", .logs),
             (String(localized: "Remote Connections…"), String(localized: "Servers to run snippets on (⌘⇧K)"), "server.rack", .connections),
             (String(localized: "Toggle Layout"), String(localized: "Result below or beside the code"), "rectangle.split.2x1", .toggleLayout),
             (String(localized: "Toggle SQL Queries"), String(localized: "Show or hide database queries"), "cylinder", .toggleQueries),

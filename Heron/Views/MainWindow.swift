@@ -18,9 +18,10 @@ struct MainWindow: View {
     @State private var table: DumpNode?
 
     enum Sheet: Identifiable {
-        case history, snippets, saveSnippet(String), palette, connections
+        case history, snippets, saveSnippet(String), palette, connections, logs
         var id: String {
             switch self {
+            case .logs: "logs"
             case .history: "history"
             case .snippets: "snippets"
             case .saveSnippet: "save"
@@ -35,7 +36,7 @@ struct MainWindow: View {
     var body: some View {
         HStack(spacing: 0) {
             Rail(workspace: workspace, run: run, history: { sheet = .history }, snippets: { sheet = .snippets },
-                 connections: { sheet = .connections })
+                 connections: { sheet = .connections }, logs: { sheet = .logs })
             VStack(spacing: 0) {
                 TabBar(workspace: workspace)
                 Rectangle().fill(theme.borderColor).frame(height: 1)
@@ -64,6 +65,7 @@ struct MainWindow: View {
                 case .saveSnippet(let code): SnippetsSheet(workspace: workspace, newCode: code)
                 case .palette: CommandPalette(workspace: workspace, perform: perform)
                 case .connections: ConnectionsSheet(workspace: workspace)
+                case .logs: LogsSheet(workspace: workspace)
                 }
             }
             .environment(\.theme, theme)
@@ -82,6 +84,7 @@ struct MainWindow: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .heronShowPalette)) { _ in sheet = .palette }
         .onReceive(NotificationCenter.default.publisher(for: .heronShowConnections)) { _ in sheet = .connections }
+        .onReceive(NotificationCenter.default.publisher(for: .heronShowLogs)) { _ in sheet = .logs }
         .alert(String(localized: "Trust this server?"),
                isPresented: Binding(get: { workspace.selected.hostKeyError != nil },
                                     set: { if !$0 { workspace.selected.hostKeyError = nil } }),
@@ -101,6 +104,7 @@ struct MainWindow: View {
             }
             // `-heron.showConnections YES` opens the connection manager, for screenshots.
             if UserDefaults.standard.bool(forKey: "heron.showConnections") { sheet = .connections }
+            if UserDefaults.standard.bool(forKey: "heron.showLogs") { sheet = .logs }
         }
         #endif
         .toolbar(removing: .title)
@@ -189,6 +193,7 @@ struct MainWindow: View {
         case .settings: NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
         case .connections: sheet = .connections
         case .connect(let connection): workspace.connect(connection)
+        case .logs: sheet = .logs
         case .toggleLayout: stacked.toggle()
         case .toggleQueries: showsQueries.toggle()
         case .openFolder(let url): workspace.newTab(project: url, keepProject: false)
@@ -205,6 +210,7 @@ extension Notification.Name {
     static let heronSaveSnippet = Notification.Name("heron.saveSnippet")
     static let heronShowPalette = Notification.Name("heron.showPalette")
     static let heronShowConnections = Notification.Name("heron.showConnections")
+    static let heronShowLogs = Notification.Name("heron.showLogs")
 }
 
 /// Lets a result card open the table preview for its value.
@@ -230,6 +236,7 @@ private struct Rail: View {
     let history: () -> Void
     let snippets: () -> Void
     let connections: () -> Void
+    let logs: () -> Void
     @Environment(\.theme) private var theme
     @State private var showsProjects = false
     @State private var showsServers = false
@@ -249,6 +256,8 @@ private struct Rail: View {
                 .popover(isPresented: $showsServers, arrowEdge: .trailing) { serverList }
             RailButton(icon: "lucide.clock", help: String(localized: "History (⌘Y)"), action: history)
             RailButton(icon: "lucide.bookmark", help: String(localized: "Snippets (⌘B)"), action: snippets)
+            RailButton(icon: "lucide.file-text", help: String(localized: "Logs (⌘L)"), action: logs)
+                .disabled(workspace.selected.project == nil && !workspace.selected.isRemote)
             Spacer()
             SettingsLink {
                 RailIcon(name: "lucide.settings", tint: theme.textColor.opacity(0.85))

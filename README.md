@@ -32,7 +32,7 @@ Heron runs PHP snippets with the PHP already on your Mac (Laravel Herd or Homebr
 | ✨ | Completion while typing: classes (with their `use` line), `->` and `::` members by reflection (columns, relations, scopes, facades), chains like `User::where()->first()->`, functions and variables; a chosen callable brings its required parameters as placeholders (Tab moves on); brackets and quotes pair up | Done |
 | 🔐 | Run on a server over SSH (⌘⇧K): saved connections in groups, password or key sign-in, trust-on-first-use host keys; the snippet runs inside the remote project with its PHP | Done |
 | 🐳 | Run in a Docker container | Planned |
-| 📜 | Log viewer | Planned |
+| 📜 | Log viewer (⌘L): storage/logs files of the project or the connected server, level filter, search, pages, live reload, full record with stack trace | Done |
 
 ## Requirements
 

@@ -80,6 +80,36 @@
         }
       }
     },
+    "1 second": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 saniye"
+          }
+        }
+      }
+    },
+    "30 seconds": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 saniye"
+          }
+        }
+      }
+    },
+    "5 seconds": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 saniye"
+          }
+        }
+      }
+    },
     "A PHP and Laravel scratchpad for macOS, by Voxyfy.": {
       "localizations": {
         "tr": {
@@ -136,6 +166,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tüm Projeler"
+          }
+        }
+      }
+    },
+    "All levels": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm düzeyler"
           }
         }
       }
@@ -237,6 +277,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Önce bir özel anahtar seçin."
+          }
+        }
+      }
+    },
+    "Choose a record to read it in full.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamamını okumak için bir kayıt seçin."
           }
         }
       }
@@ -478,6 +528,16 @@
         }
       }
     },
+    "DESCRIPTION": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AÇIKLAMA"
+          }
+        }
+      }
+    },
     "Dark": {
       "extractionState": "stale",
       "localizations": {
@@ -566,6 +626,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Önce parolayı girin."
+          }
+        }
+      }
+    },
+    "Errors only": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnız hatalar"
           }
         }
       }
@@ -788,6 +858,16 @@
         }
       }
     },
+    "LEVEL": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DÜZEY"
+          }
+        }
+      }
+    },
     "Label": {
       "localizations": {
         "tr": {
@@ -842,6 +922,16 @@
         }
       }
     },
+    "Levels (%lld)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzeyler (%lld)"
+          }
+        }
+      }
+    },
     "Light": {
       "extractionState": "stale",
       "localizations": {
@@ -873,12 +963,52 @@
         }
       }
     },
+    "Logs": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlükler"
+          }
+        }
+      }
+    },
+    "Logs (⌘L)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlükler (⌘L)"
+          }
+        }
+      }
+    },
+    "Logs…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlükler…"
+          }
+        }
+      }
+    },
     "Manage Connections…": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Bağlantıları Yönet…"
+          }
+        }
+      }
+    },
+    "Manual": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elle"
           }
         }
       }
@@ -954,6 +1084,16 @@
         }
       }
     },
+    "Next": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonraki"
+          }
+        }
+      }
+    },
     "No PHP found": {
       "localizations": {
         "tr": {
@@ -985,12 +1125,42 @@
         }
       }
     },
+    "No log files": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük dosyası yok"
+          }
+        }
+      }
+    },
     "No password or key is saved for %@. Edit the connection.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "%@ için kayıtlı parola ya da anahtar yok. Bağlantıyı düzenleyin."
+          }
+        }
+      }
+    },
+    "No password or key is saved for this server.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu sunucu için kayıtlı parola ya da anahtar yok."
+          }
+        }
+      }
+    },
+    "No records in this file.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu dosyada kayıt yok."
           }
         }
       }
@@ -1075,6 +1245,16 @@
         }
       }
     },
+    "Open Logs": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlükleri Aç"
+          }
+        }
+      }
+    },
     "Open Project Folder…": {
       "localizations": {
         "tr": {
@@ -1122,6 +1302,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bir proje klasörü açın…"
+          }
+        }
+      }
+    },
+    "Open a project or connect to a server to see its logs.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlükleri görmek için bir proje açın ya da bir sunucuya bağlanın."
           }
         }
       }
@@ -1239,6 +1429,22 @@
         }
       }
     },
+    "Page %lld / %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Page %1$lld / %2$lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sayfa %lld / %lld"
+          }
+        }
+      }
+    },
     "Passphrase": {
       "localizations": {
         "tr": {
@@ -1299,12 +1505,32 @@
         }
       }
     },
+    "Press ⌘F to focus search": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aramaya geçmek için ⌘F"
+          }
+        }
+      }
+    },
     "Press ⌘R to run the snippet.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Kodu çalıştırmak için ⌘R'ye basın."
+          }
+        }
+      }
+    },
+    "Previous": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önceki"
           }
         }
       }
@@ -1385,6 +1611,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Son klasörler"
+          }
+        }
+      }
+    },
+    "Reload (⌘R)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden yükle (⌘R)"
+          }
+        }
+      }
+    },
+    "Reload the file this often": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyayı bu sıklıkla yeniden yükler"
           }
         }
       }
@@ -1917,6 +2163,16 @@
         }
       }
     },
+    "TIME": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZAMAN"
+          }
+        }
+      }
+    },
     "Table Preview": {
       "localizations": {
         "tr": {
@@ -1983,6 +2239,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Proje başlatılamadı."
+          }
+        }
+      }
+    },
+    "The project's storage/logs (⌘L)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projenin storage/logs klasörü (⌘L)"
           }
         }
       }
