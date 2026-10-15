@@ -3,9 +3,10 @@ import Foundation
 /// Where Heron is sold. Fill these in from the Lemon Squeezy dashboard; until then every key
 /// that Lemon Squeezy accepts is taken, whichever product it belongs to.
 enum LicenseConfig {
-    /// Settings ▸ General ▸ Store ID.
-    static let storeID = 0
-    /// The Heron product's ID (Products ▸ Heron ▸ the number in the URL).
+    /// Settings ▸ Stores: Voxyfy, #498451 (the same in test and live mode).
+    static let storeID = 498451
+    /// The Heron product's ID. 1442112 is the TEST-mode product; "Copy to Live Mode" makes a new
+    /// one with its own id, which goes here before the first release. 0 accepts any product.
     static let productID = 0
     /// The checkout link for the yearly plan; the Buy button opens it.
     static let checkoutURL = URL(string: "https://voxyfy.lemonsqueezy.com/buy/heron")!
