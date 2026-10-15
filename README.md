@@ -30,7 +30,8 @@ Heron runs PHP snippets with the PHP already on your Mac (Laravel Herd or Homebr
 | 📊 | Table view for lists of rows, with search and CSV export; database queries on demand | Done |
 | 🎨 | Five themes, dark by default | Done |
 | ✨ | Completion while typing: classes (with their `use` line), `->` and `::` members by reflection (columns, relations, scopes, facades), chains like `User::where()->first()->`, functions and variables; a chosen callable brings its required parameters as placeholders (Tab moves on); brackets and quotes pair up | Done |
-| 🔐 | Run on a server over SSH, or in a Docker container | Planned |
+| 🔐 | Run on a server over SSH (⌘⇧K): saved connections in groups, password or key sign-in, trust-on-first-use host keys; the snippet runs inside the remote project with its PHP | Done |
+| 🐳 | Run in a Docker container | Planned |
 | 📜 | Log viewer | Planned |
 
 ## Requirements
@@ -58,6 +59,15 @@ xcodebuild -scheme Heron test -test-timeouts-enabled YES -default-test-execution
 
 The tests use the PHP on your Mac and are skipped when there is none. To also check booting a Laravel app, point `TEST_RUNNER_HERON_LARAVEL_PROJECT` at one with `vendor/` installed.
 
+The SSH round trip runs against a local test server on port 2224 and is skipped when none is listening. To start one:
+
+```sh
+docker run -d --name heron-sshd -p 2224:2222 -e PUID=1000 -e PGID=1000 -e USER_NAME=heron \
+  -e PASSWORD_ACCESS=true -e USER_PASSWORD=heron-test lscr.io/linuxserver/openssh-server:latest
+docker exec heron-sshd sh -c 'apk add --no-cache php83-cli php83-tokenizer php83-mbstring php83-ctype && ln -sf /usr/bin/php83 /usr/bin/php \
+  && mkdir -p /config/app && echo "<?php return [\"name\"=>\"Heron remote\"];" > /config/app/config.php && chown -R 1000:1000 /config/app'
+```
+
 ## Translations
 
 After adding strings, build once, then:
@@ -74,12 +84,15 @@ Heron/
   App/       App entry, menus (Code ▸ Run ⌘R, Stop ⌘.)
   Editor/    NSTextView editor: highlighting, indentation, line notes; editor settings
   Runner/    PHPRunner (one php process per run), runner.php, format.php, complete.php (reflection for the completion list)
-  Views/     Main window, result panel, workspace state
+  Remote/    RemoteConnection + ConnectionStore (connections.json, secrets in Keychain), RemoteRunner (Citadel SSH), host keys
+  Views/     Main window, result panel, connection manager, workspace state
 ```
 
 Each run starts a fresh `php` process with `runner.php`. It boots the project, runs the snippet with `eval`, and writes the result (the last expression's value, the error, warnings with line numbers, time and memory) to a JSON file. Echoed output stays on stdout. If the last statement is an expression, Heron adds `return`, so `User::count()` on the last line shows its value.
 
 `format.php` tidies the snippet using PHP's own tokenizer, so strings and comments are never touched.
+
+On a server, one SSH command does the whole run: `runner.php` and the snippet travel inside it as base64 into a temporary folder, `php` runs from the project folder, the result JSON is printed after a marker, and the folder is removed. Nothing in the remote project changes. Connections are saved in `~/Library/Application Support/Heron/connections.json`; passwords, keys and passphrases only in Keychain.
 
 ## License
 

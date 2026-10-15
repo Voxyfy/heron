@@ -25,6 +25,9 @@ struct WelcomeView: View {
                     StartCard(icon: "lucide.folder-open", title: String(localized: "Open a project"),
                               detail: String(localized: "Laravel and plain PHP projects. Models, config and the database come along."),
                               shortcut: "⌘O") { workspace.chooseProject(forNewTab: true) }
+                    StartCard(icon: "lucide.server", title: String(localized: "Connect to a server"),
+                              detail: String(localized: "Run snippets on a remote project over SSH, inside its own PHP."),
+                              shortcut: "⌘⇧K") { NotificationCenter.default.post(name: .heronShowConnections, object: nil) }
                     StartCard(icon: "lucide.bookmark", title: String(localized: "Snippets"),
                               detail: String(localized: "Code you saved earlier, for any project or this one."),
                               shortcut: "⌘B") { NotificationCenter.default.post(name: .heronShowSnippets, object: nil) }
@@ -47,6 +50,7 @@ struct WelcomeView: View {
                 HStack(spacing: 18) {
                     hint("⌘P", String(localized: "Open anything"))
                     hint("⌘Y", String(localized: "History"))
+                    hint("⌘⇧K", String(localized: "Servers"))
                     hint("⌘T", String(localized: "New tab"))
                     hint("⌘,", String(localized: "Settings"))
                 }

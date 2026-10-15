@@ -14,6 +14,7 @@ struct CommandPalette: View {
     enum Action {
         case run, stop, newTab, chooseProject, plainPHP, history, snippets, settings, toggleLayout, toggleQueries
         case openFolder(URL), openSnippet(Snippet)
+        case connections, connect(RemoteConnection)
     }
 
     private struct Entry: Identifiable {
@@ -35,12 +36,16 @@ struct CommandPalette: View {
             (String(localized: "Open History"), String(localized: "Snippets that ran before (⌘Y)"), "clock", .history),
             (String(localized: "Open Snippets"), String(localized: "Saved code (⌘B)"), "bookmark", .snippets),
             (String(localized: "Open Settings"), String(localized: "PHP, editor, themes (⌘,)"), "gearshape", .settings),
+            (String(localized: "Remote Connections…"), String(localized: "Servers to run snippets on (⌘⇧K)"), "server.rack", .connections),
             (String(localized: "Toggle Layout"), String(localized: "Result below or beside the code"), "rectangle.split.2x1", .toggleLayout),
             (String(localized: "Toggle SQL Queries"), String(localized: "Show or hide database queries"), "cylinder", .toggleQueries),
         ]
         let folders = workspace.recentProjects.map {
             Entry(title: $0.lastPathComponent, detail: ($0.path(percentEncoded: false) as NSString).abbreviatingWithTildeInPath,
                   symbol: "folder", kind: String(localized: "Recent"), action: .openFolder($0))
+        }
+        let servers = workspace.connections.connections.map {
+            Entry(title: $0.title, detail: $0.host, symbol: "server.rack", kind: String(localized: "Server"), action: .connect($0))
         }
         let snippets = workspace.snippets.all(for: workspace.selected.project).map {
             Entry(title: $0.title, detail: $0.projectName ?? $0.description, symbol: "bookmark",
@@ -52,7 +57,7 @@ struct CommandPalette: View {
         } else if text.hasPrefix("#") {
             text.removeFirst(); all = snippets
         } else {
-            all = folders + snippets + commands.map {
+            all = folders + servers + snippets + commands.map {
                 Entry(title: $0.0, detail: $0.1, symbol: $0.2, kind: String(localized: "Command"), action: $0.3)
             }
         }

@@ -52,6 +52,10 @@ struct HeronApp: App {
                     NotificationCenter.default.post(name: .heronShowSnippets, object: nil)
                 }
                 .keyboardShortcut("b")
+                Button(String(localized: "Remote Connections…")) {
+                    NotificationCenter.default.post(name: .heronShowConnections, object: nil)
+                }
+                .keyboardShortcut("k", modifiers: [.command, .shift])
             }
         }
         Settings {

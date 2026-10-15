@@ -11,6 +11,16 @@ $heronRoot = $argv[3] ?? '';
 $heronResult = ['kind' => 'php', 'php' => PHP_VERSION, 'warnings' => [], 'items' => []];
 $heronWritten = false;
 
+// Minimal server installs (Alpine, some Docker images) ship php without the tokenizer; say so
+// plainly instead of failing inside heron_split.
+if (!function_exists('token_get_all')) {
+    file_put_contents($heronResultFile, json_encode($heronResult + ['error' => [
+        'class' => 'Error',
+        'message' => "PHP's tokenizer extension is missing here. Install it (php-tokenizer) and run again.",
+    ]]));
+    exit(1);
+}
+
 function heron_write(array $result): void
 {
     global $heronResultFile, $heronWritten;

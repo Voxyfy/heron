@@ -8,7 +8,7 @@ struct TabBar: View {
     var body: some View {
         HStack(spacing: 0) {
             ForEach(workspace.tabs) { tab in
-                TabItem(tab: tab, isSelected: tab.id == workspace.selectedID,
+                TabItem(tab: tab, title: workspace.title(of: tab), isSelected: tab.id == workspace.selectedID,
                         select: { workspace.select(tab) }, close: { workspace.close(tab) })
             }
             Button { workspace.newWelcomeTab() } label: {
@@ -26,6 +26,7 @@ struct TabBar: View {
 
 private struct TabItem: View {
     let tab: Tab
+    let title: String
     let isSelected: Bool
     let select: () -> Void
     let close: () -> Void
@@ -37,7 +38,7 @@ private struct TabItem: View {
             if tab.isRunning {
                 ProgressView().controlSize(.mini)
             }
-            Text(tab.title)
+            Text(title)
                 .font(.system(size: 12))
                 .foregroundStyle(isSelected ? theme.textColor : theme.mutedColor)
                 .lineLimit(1)

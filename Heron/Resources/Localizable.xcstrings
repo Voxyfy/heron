@@ -10,6 +10,26 @@
     "%@ => ": {
       "shouldTranslate": false
     },
+    "%@ copy": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ kopyası"
+          }
+        }
+      }
+    },
+    "%@ keys aren't supported yet. Use an ed25519 or RSA key.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ anahtarları henüz desteklenmiyor. ed25519 ya da RSA anahtar kullanın."
+          }
+        }
+      }
+    },
     "%@%@: ": {
       "shouldTranslate": false
     },
@@ -50,6 +70,16 @@
         }
       }
     },
+    "/home/forge/example.com": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/home/forge/example.com"
+          }
+        }
+      }
+    },
     "A PHP and Laravel scratchpad for macOS, by Voxyfy.": {
       "localizations": {
         "tr": {
@@ -80,6 +110,16 @@
         }
       }
     },
+    "Add": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekle"
+          }
+        }
+      }
+    },
     "All": {
       "localizations": {
         "tr": {
@@ -96,6 +136,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tüm Projeler"
+          }
+        }
+      }
+    },
+    "An OpenSSH key (ed25519 or RSA). The key is kept in your Keychain.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir OpenSSH anahtarı (ed25519 ya da RSA). Anahtar Anahtar Zinciri'nizde saklanır."
           }
         }
       }
@@ -120,6 +170,16 @@
         }
       }
     },
+    "Authentication Method": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kimlik Doğrulama Yöntemi"
+          }
+        }
+      }
+    },
     "Behavior": {
       "extractionState": "stale",
       "localizations": {
@@ -127,6 +187,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Davranış"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
           }
         }
       }
@@ -161,6 +231,26 @@
         }
       }
     },
+    "Choose a private key first.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önce bir özel anahtar seçin."
+          }
+        }
+      }
+    },
+    "Choose a server, or add one.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir sunucu seçin ya da ekleyin."
+          }
+        }
+      }
+    },
     "Choose a snippet, or save the current code as one.": {
       "localizations": {
         "tr": {
@@ -181,6 +271,26 @@
         }
       }
     },
+    "Choose the project's folder on this Mac.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projenin bu Mac'teki klasörünü seçin."
+          }
+        }
+      }
+    },
+    "Choose your private key (not the .pub file).": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Özel anahtarınızı seçin (.pub dosyasını değil)."
+          }
+        }
+      }
+    },
     "Choose…": {
       "localizations": {
         "tr": {
@@ -197,6 +307,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geçmişi Temizle"
+          }
+        }
+      }
+    },
+    "Clients, Staging, …": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Müşteriler, Staging, …"
           }
         }
       }
@@ -241,6 +361,16 @@
         }
       }
     },
+    "Code completion on a server works from a copy of the project on this Mac.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucudaki projede kod tamamlama, projenin bu Mac'teki kopyasından çalışır."
+          }
+        }
+      }
+    },
     "Code you saved earlier, for any project or this one.": {
       "localizations": {
         "tr": {
@@ -261,6 +391,26 @@
         }
       }
     },
+    "Connect": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlan"
+          }
+        }
+      }
+    },
+    "Connect to a server": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir sunucuya bağlanın"
+          }
+        }
+      }
+    },
     "Connect to a server… (soon)": {
       "extractionState": "stale",
       "localizations": {
@@ -268,6 +418,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bir sunucuya bağlanın… (yakında)"
+          }
+        }
+      }
+    },
+    "Connected to": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı:"
+          }
+        }
+      }
+    },
+    "Connected. PHP %@ on %@.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Connected. PHP %1$@ on %2$@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlandı. %2$@ üzerinde PHP %1$@."
+          }
+        }
+      }
+    },
+    "Connecting to %@…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sunucusuna bağlanılıyor…"
+          }
+        }
+      }
+    },
+    "Connection": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı"
           }
         }
       }
@@ -313,6 +509,26 @@
         }
       }
     },
+    "Double \"…\"": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çift \"…\""
+          }
+        }
+      }
+    },
+    "Duplicate": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çoğalt"
+          }
+        }
+      }
+    },
     "Editor": {
       "localizations": {
         "tr": {
@@ -340,6 +556,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bir satırın değerini editörde görmek için satır sonuna //? yazın ya da bir ifadenin ardına /*?->count()*/ ekleyin."
+          }
+        }
+      }
+    },
+    "Enter the password first.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önce parolayı girin."
           }
         }
       }
@@ -394,11 +620,41 @@
         }
       }
     },
+    "Group": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grup"
+          }
+        }
+      }
+    },
+    "Group name": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grup adı"
+          }
+        }
+      }
+    },
     "Heron": {
       "shouldTranslate": false
     },
     "Heron - %@": {
       "shouldTranslate": false
+    },
+    "Heron hasn't connected to %@ before.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heron daha önce %@ sunucusuna bağlanmadı."
+          }
+        }
+      }
     },
     "Heron — %@": {
       "localizations": {
@@ -480,6 +736,16 @@
         }
       }
     },
+    "Host": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu"
+          }
+        }
+      }
+    },
     "Indent width": {
       "extractionState": "stale",
       "localizations": {
@@ -522,6 +788,16 @@
         }
       }
     },
+    "Label": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiket"
+          }
+        }
+      }
+    },
     "Laravel %@": {
       "shouldTranslate": false
     },
@@ -542,6 +818,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yerleşim"
+          }
+        }
+      }
+    },
+    "Leave as written": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazıldığı gibi bırak"
           }
         }
       }
@@ -573,6 +859,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Satır %lld"
+          }
+        }
+      }
+    },
+    "Local Path": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yerel Yol"
+          }
+        }
+      }
+    },
+    "Manage Connections…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantıları Yönet…"
           }
         }
       }
@@ -618,6 +924,26 @@
         }
       }
     },
+    "New connection": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni bağlantı"
+          }
+        }
+      }
+    },
+    "New group": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni grup"
+          }
+        }
+      }
+    },
     "New tab": {
       "localizations": {
         "tr": {
@@ -655,6 +981,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Proje Yok (Düz PHP)"
+          }
+        }
+      }
+    },
+    "No password or key is saved for %@. Edit the connection.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ için kayıtlı parola ya da anahtar yok. Bağlantıyı düzenleyin."
+          }
+        }
+      }
+    },
+    "No servers yet.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz sunucu yok."
+          }
+        }
+      }
+    },
+    "No servers yet. Add one with + Connection.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz sunucu yok. + Bağlantı ile ekleyin."
+          }
+        }
+      }
+    },
+    "None chosen": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçilmedi"
           }
         }
       }
@@ -790,6 +1156,16 @@
         }
       }
     },
+    "Optional": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İsteğe bağlı"
+          }
+        }
+      }
+    },
     "Output": {
       "localizations": {
         "tr": {
@@ -863,6 +1239,36 @@
         }
       }
     },
+    "Passphrase": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parola cümlesi"
+          }
+        }
+      }
+    },
+    "Password": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parola"
+          }
+        }
+      }
+    },
+    "Pasted key": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yapıştırılan anahtar"
+          }
+        }
+      }
+    },
     "Pick a project, write a few lines of PHP, press ⌘R.": {
       "localizations": {
         "tr": {
@@ -883,12 +1289,42 @@
         }
       }
     },
+    "Plain strings are rewritten with this quote; strings with variables or escapes stay as they are.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düz metinler bu tırnakla yazılır; içinde değişken ya da kaçış olan metinlere dokunulmaz."
+          }
+        }
+      }
+    },
     "Press ⌘R to run the snippet.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Kodu çalıştırmak için ⌘R'ye basın."
+          }
+        }
+      }
+    },
+    "Private Key": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Özel Anahtar"
+          }
+        }
+      }
+    },
+    "Production": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Production"
           }
         }
       }
@@ -913,6 +1349,16 @@
         }
       }
     },
+    "Quotes when tidying": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzenlerken tırnaklar"
+          }
+        }
+      }
+    },
     "Recent": {
       "localizations": {
         "tr": {
@@ -923,12 +1369,82 @@
         }
       }
     },
+    "Recent connections": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son bağlantılar"
+          }
+        }
+      }
+    },
     "Recent folders": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Son klasörler"
+          }
+        }
+      }
+    },
+    "Remote Connection Manager": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzak Bağlantı Yöneticisi"
+          }
+        }
+      }
+    },
+    "Remote Connections…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzak Bağlantılar…"
+          }
+        }
+      }
+    },
+    "Remote Folder": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzak Klasör"
+          }
+        }
+      }
+    },
+    "Remove group (its servers stay)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grubu kaldır (sunucuları kalır)"
+          }
+        }
+      }
+    },
+    "Rename": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden Adlandır"
+          }
+        }
+      }
+    },
+    "Rename group": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grubu yeniden adlandır"
           }
         }
       }
@@ -970,6 +1486,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çalıştır (⌘R)"
+          }
+        }
+      }
+    },
+    "Run on this Mac": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac'te çalıştır"
+          }
+        }
+      }
+    },
+    "Run snippets on a remote project over SSH, inside its own PHP.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod parçalarını SSH üzerinden uzak projede, oradaki PHP ile çalıştırın."
           }
         }
       }
@@ -1018,6 +1554,16 @@
     "SQL": {
       "shouldTranslate": false
     },
+    "Save": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaydet"
+          }
+        }
+      }
+    },
     "Save Snippet": {
       "localizations": {
         "tr": {
@@ -1034,6 +1580,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kod Parçası Olarak Kaydet…"
+          }
+        }
+      }
+    },
+    "Saved": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaydedildi"
           }
         }
       }
@@ -1064,6 +1620,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ara…"
+          }
+        }
+      }
+    },
+    "Server": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu"
+          }
+        }
+      }
+    },
+    "Servers": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucular"
+          }
+        }
+      }
+    },
+    "Servers (⌘⇧K)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucular (⌘⇧K)"
+          }
+        }
+      }
+    },
+    "Servers to run snippets on (⌘⇧K)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod parçalarının çalışacağı sunucular (⌘⇧K)"
           }
         }
       }
@@ -1168,6 +1764,16 @@
         }
       }
     },
+    "Single '…'": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek '…'"
+          }
+        }
+      }
+    },
     "Size": {
       "extractionState": "stale",
       "localizations": {
@@ -1216,6 +1822,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kod parçaları düz PHP olarak çalışır"
+          }
+        }
+      }
+    },
+    "Snippets run on the server over SSH, inside the project folder you give.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod parçaları SSH üzerinden sunucuda, verdiğiniz proje klasörünün içinde çalışır."
           }
         }
       }
@@ -1321,12 +1937,72 @@
         }
       }
     },
+    "Test": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sına"
+          }
+        }
+      }
+    },
+    "Testing %@…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sınanıyor…"
+          }
+        }
+      }
+    },
+    "The identity of %@ has changed. Someone may be intercepting the connection.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sunucusunun kimliği değişti. Bağlantıya biri araya girmiş olabilir."
+          }
+        }
+      }
+    },
+    "The key's passphrase is incorrect.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anahtarın parola cümlesi yanlış."
+          }
+        }
+      }
+    },
     "The project couldn't start.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Proje başlatılamadı."
+          }
+        }
+      }
+    },
+    "The server didn't accept this RSA key. Newer servers refuse the RSA signature Heron uses for now. Try an ed25519 key (ssh-keygen -t ed25519), and check that the public key is in authorized_keys.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu bu RSA anahtarını kabul etmedi. Yeni sunucular Heron'un şimdilik kullandığı RSA imzasını reddediyor. Bir ed25519 anahtar deneyin (ssh-keygen -t ed25519) ve açık anahtarın authorized_keys içinde olduğundan emin olun."
+          }
+        }
+      }
+    },
+    "The server didn't return a result. Is php installed there?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu sonuç döndürmedi. Orada php kurulu mu?"
           }
         }
       }
@@ -1358,6 +2034,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Temalar editörü, sonuçları ve pencereyi renklendirir."
+          }
+        }
+      }
+    },
+    "This isn't an OpenSSH private key. Convert it with: ssh-keygen -p -f <key>": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bir OpenSSH özel anahtarı değil. Şu komutla dönüştürün: ssh-keygen -p -f <anahtar>"
+          }
+        }
+      }
+    },
+    "This key is protected. Enter its passphrase.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu anahtar korumalı. Parola cümlesini girin."
           }
         }
       }
@@ -1424,6 +2120,36 @@
         }
       }
     },
+    "Trust": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güven"
+          }
+        }
+      }
+    },
+    "Trust this server?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu sunucuya güvenilsin mi?"
+          }
+        }
+      }
+    },
+    "Ungrouped": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupsuz"
+          }
+        }
+      }
+    },
     "Untitled": {
       "localizations": {
         "tr": {
@@ -1446,6 +2172,16 @@
     },
     "User::where('active', true)->count()": {
       "shouldTranslate": false
+    },
+    "Username": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı adı"
+          }
+        }
+      }
     },
     "Value": {
       "extractionState": "stale",
@@ -1494,6 +2230,16 @@
         }
       }
     },
+    "What to run on the server; leave \"php\" to use its PATH.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucuda çalıştırılacak komut; PATH'tekini kullanmak için \"php\" bırakın."
+          }
+        }
+      }
+    },
     "Wrap long lines": {
       "localizations": {
         "tr": {
@@ -1507,11 +2253,51 @@
     "]": {
       "shouldTranslate": false
     },
+    "example.com": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "example.com"
+          }
+        }
+      }
+    },
+    "forge": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "forge"
+          }
+        }
+      }
+    },
+    "php": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "php"
+          }
+        }
+      }
+    },
     "}": {
       "shouldTranslate": false
     },
     "© 2026 Batuhan Haymana": {
       "shouldTranslate": false
+    },
+    "⌘F": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⌘F"
+          }
+        }
+      }
     },
     "⌘P opens anything: recent folders, snippets, commands.": {
       "extractionState": "stale",

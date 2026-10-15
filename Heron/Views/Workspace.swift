@@ -11,6 +11,7 @@ final class Workspace {
     private(set) var recentProjects: [URL]
     let history = History()
     let snippets = SnippetStore()
+    let connections = ConnectionStore()
     /// Why the snippet couldn't even start, when there's no PHP.
     private(set) var failure: String?
     private var versions: [URL: String] = [:]
@@ -42,6 +43,14 @@ final class Workspace {
 
     var selected: Tab {
         tabs.first { $0.id == selectedID } ?? tabs[0]
+    }
+
+    func connection(of tab: Tab) -> RemoteConnection? {
+        connections.connection(id: tab.connectionID)
+    }
+
+    func title(of tab: Tab) -> String {
+        tab.title(connection: connection(of: tab))
     }
 
     // MARK: PHP
@@ -137,6 +146,36 @@ final class Workspace {
         save()
     }
 
+    // MARK: Servers
+
+    /// Puts the current tab on a server, or opens a tab for it from the Get started page.
+    func connect(_ connection: RemoteConnection) {
+        connections.noteConnected(connection.id)
+        if selected.isWelcome {
+            let tab = newTab(project: connection.localProjectURL, keepProject: false)
+            tab.connectionID = connection.id
+        } else {
+            selected.connectionID = connection.id
+            if let local = connection.localProjectURL { selected.project = local }
+        }
+        save()
+    }
+
+    /// Back to this Mac's PHP.
+    func disconnect() {
+        guard !selected.isWelcome else { return }
+        selected.connectionID = nil
+        save()
+    }
+
+    /// Trusts the server key the last run stopped at, then runs again.
+    func trustHostKey(tidy: Bool, indent: String) {
+        guard let error = selected.hostKeyError else { return }
+        HostKeys.trust(error.presentedKey, host: error.host, port: error.port)
+        selected.hostKeyError = nil
+        run(tidy: tidy, indent: indent)
+    }
+
     private func remember(_ url: URL) {
         recentProjects = ([url] + recentProjects.filter { $0 != url }).prefix(8).map { $0 }
         UserDefaults.standard.set(recentProjects.map { $0.path(percentEncoded: false) }, forKey: "workspace.recent")
@@ -146,13 +185,15 @@ final class Workspace {
 
     func run(tidy: Bool, indent: String) {
         guard !selected.isWelcome else { return }
-        guard let php else {
+        let tab = selected
+        let connection = connection(of: tab)
+        // A server run needs no PHP here; only tidying does, and it's skipped without one.
+        if connection == nil, php == nil {
             failure = RunnerError.noPHP.localizedDescription
             return
         }
         failure = nil
-        let tab = selected
-        tab.run(php: php, tidy: tidy, indent: indent) { [weak self] _ in
+        tab.run(php: php, connection: connection, tidy: tidy, indent: indent) { [weak self] _ in
             self?.history.add(code: tab.code, project: tab.project)
             self?.save()
         }

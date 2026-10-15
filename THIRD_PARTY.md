@@ -16,3 +16,10 @@ used under the ISC License:
 > FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
 > OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
 > OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+## Citadel (SSH)
+
+Server connections use [Citadel](https://github.com/orlandos-nl/Citadel) by Orlandos, on top of
+[SwiftNIO SSH](https://github.com/apple/swift-nio-ssh) and [swift-crypto](https://github.com/apple/swift-crypto)
+by Apple. Citadel is used under the MIT License; the Apple packages under the Apache License 2.0. They are
+fetched by Swift Package Manager at build time and are not part of this repository.

@@ -18,13 +18,14 @@ struct MainWindow: View {
     @State private var table: DumpNode?
 
     enum Sheet: Identifiable {
-        case history, snippets, saveSnippet(String), palette
+        case history, snippets, saveSnippet(String), palette, connections
         var id: String {
             switch self {
             case .history: "history"
             case .snippets: "snippets"
             case .saveSnippet: "save"
             case .palette: "palette"
+            case .connections: "connections"
             }
         }
     }
@@ -33,7 +34,8 @@ struct MainWindow: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            Rail(workspace: workspace, run: run, history: { sheet = .history }, snippets: { sheet = .snippets })
+            Rail(workspace: workspace, run: run, history: { sheet = .history }, snippets: { sheet = .snippets },
+                 connections: { sheet = .connections })
             VStack(spacing: 0) {
                 TabBar(workspace: workspace)
                 Rectangle().fill(theme.borderColor).frame(height: 1)
@@ -53,7 +55,7 @@ struct MainWindow: View {
         }
         .environment(\.theme, theme)
         .background(theme.panelColor)
-        .navigationTitle("Heron — \(workspace.selected.title)")
+        .navigationTitle("Heron — \(workspace.title(of: workspace.selected))")
         .sheet(item: $sheet) { which in
             Group {
                 switch which {
@@ -61,6 +63,7 @@ struct MainWindow: View {
                 case .snippets: SnippetsSheet(workspace: workspace)
                 case .saveSnippet(let code): SnippetsSheet(workspace: workspace, newCode: code)
                 case .palette: CommandPalette(workspace: workspace, perform: perform)
+                case .connections: ConnectionsSheet(workspace: workspace)
                 }
             }
             .environment(\.theme, theme)
@@ -78,12 +81,26 @@ struct MainWindow: View {
             if !workspace.selected.isWelcome { sheet = .saveSnippet(workspace.selected.code) }
         }
         .onReceive(NotificationCenter.default.publisher(for: .heronShowPalette)) { _ in sheet = .palette }
+        .onReceive(NotificationCenter.default.publisher(for: .heronShowConnections)) { _ in sheet = .connections }
+        .alert(String(localized: "Trust this server?"),
+               isPresented: Binding(get: { workspace.selected.hostKeyError != nil },
+                                    set: { if !$0 { workspace.selected.hostKeyError = nil } }),
+               presenting: workspace.selected.hostKeyError) { _ in
+            Button(String(localized: "Trust")) {
+                workspace.trustHostKey(tidy: formatsOnRun, indent: EditorSettings.indentUnit(tabs: usesTabs, width: indentWidth))
+            }
+            Button(String(localized: "Cancel"), role: .cancel) { workspace.selected.hostKeyError = nil }
+        } message: { error in
+            Text(verbatim: (error.errorDescription ?? "") + "\n\n" + HostKeys.fingerprint(error.presentedKey))
+        }
         #if DEBUG
         // `-heron.runOnLaunch YES` runs the snippet once at launch, for screenshots and checks.
         .task {
             if UserDefaults.standard.bool(forKey: "heron.runOnLaunch"), workspace.selected.result == nil {
                 run()
             }
+            // `-heron.showConnections YES` opens the connection manager, for screenshots.
+            if UserDefaults.standard.bool(forKey: "heron.showConnections") { sheet = .connections }
         }
         #endif
         .toolbar(removing: .title)
@@ -107,7 +124,7 @@ struct MainWindow: View {
     }
 
     private var titleView: some View {
-        Text("Heron - \(workspace.selected.title)")
+        Text("Heron - \(workspace.title(of: workspace.selected))")
             .font(.system(size: 13))
             .foregroundStyle(theme.textColor)
     }
@@ -170,6 +187,8 @@ struct MainWindow: View {
         case .history: sheet = .history
         case .snippets: sheet = .snippets
         case .settings: NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        case .connections: sheet = .connections
+        case .connect(let connection): workspace.connect(connection)
         case .toggleLayout: stacked.toggle()
         case .toggleQueries: showsQueries.toggle()
         case .openFolder(let url): workspace.newTab(project: url, keepProject: false)
@@ -185,6 +204,7 @@ extension Notification.Name {
     static let heronShowSnippets = Notification.Name("heron.showSnippets")
     static let heronSaveSnippet = Notification.Name("heron.saveSnippet")
     static let heronShowPalette = Notification.Name("heron.showPalette")
+    static let heronShowConnections = Notification.Name("heron.showConnections")
 }
 
 /// Lets a result card open the table preview for its value.
@@ -209,8 +229,10 @@ private struct Rail: View {
     let run: () -> Void
     let history: () -> Void
     let snippets: () -> Void
+    let connections: () -> Void
     @Environment(\.theme) private var theme
     @State private var showsProjects = false
+    @State private var showsServers = false
 
     var body: some View {
         VStack(spacing: 2) {
@@ -222,6 +244,9 @@ private struct Rail: View {
             }
             RailButton(icon: "lucide.folder-open", help: String(localized: "Project (⌘O)")) { showsProjects.toggle() }
                 .popover(isPresented: $showsProjects, arrowEdge: .trailing) { projectList }
+            RailButton(icon: "lucide.server", help: String(localized: "Servers (⌘⇧K)"),
+                       tint: workspace.selected.isRemote ? theme.accentColor : nil) { showsServers.toggle() }
+                .popover(isPresented: $showsServers, arrowEdge: .trailing) { serverList }
             RailButton(icon: "lucide.clock", help: String(localized: "History (⌘Y)"), action: history)
             RailButton(icon: "lucide.bookmark", help: String(localized: "Snippets (⌘B)"), action: snippets)
             Spacer()
@@ -254,9 +279,44 @@ private struct Rail: View {
         .frame(minWidth: 240)
     }
 
+    /// Recent connections, like the reference: name on the left, host on the right.
+    private var serverList: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(String(localized: "Recent connections")).font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(.secondary).padding(.horizontal, 8).padding(.vertical, 4)
+            if workspace.connections.recentConnections.isEmpty {
+                Text(String(localized: "No servers yet.")).foregroundStyle(.secondary).padding(.horizontal, 8).padding(.vertical, 5)
+            }
+            ForEach(workspace.connections.recentConnections) { connection in
+                Button {
+                    showsServers = false
+                    workspace.connect(connection)
+                } label: {
+                    HStack(spacing: 12) {
+                        Circle().fill(Color(hex: connection.color)).frame(width: 7, height: 7)
+                        Text(connection.title).lineLimit(1)
+                        Spacer()
+                        Text(connection.host).font(.system(size: 11)).foregroundStyle(.secondary).lineLimit(1)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .padding(.vertical, 5).padding(.horizontal, 8)
+            }
+            Divider().padding(.vertical, 4)
+            if workspace.selected.isRemote {
+                projectRow(String(localized: "Run on this Mac"), symbol: "laptopcomputer") { workspace.disconnect() }
+            }
+            projectRow(String(localized: "Manage Connections…"), symbol: "slider.horizontal.3") { connections() }
+        }
+        .padding(8)
+        .frame(minWidth: 260)
+    }
+
     private func projectRow(_ title: String, symbol: String, action: @escaping () -> Void) -> some View {
         Button {
             showsProjects = false
+            showsServers = false
             action()
         } label: {
             Label(title, systemImage: symbol).frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
@@ -318,15 +378,27 @@ private struct StatusBar: View {
                 .padding(.horizontal, 12)
                 Rectangle().fill(theme.borderColor).frame(width: 1, height: 14)
             }
-            segment(workspace.phpVersion.map { "PHP \($0)" } ?? String(localized: "PHP not found"),
-                    color: workspace.phpVersion == nil ? .red : theme.mutedColor)
+            if let connection = workspace.connection(of: tab) {
+                segment(tab.result.map { "PHP \($0.php)" } ?? "SSH", color: theme.mutedColor)
+                HStack(spacing: 8) {
+                    Circle().fill(Color(hex: connection.color)).frame(width: 7, height: 7)
+                    Text(String(localized: "Connected to")).foregroundStyle(theme.mutedColor)
+                    Text(connection.title).fontWeight(.bold).foregroundStyle(theme.textColor)
+                }
+                .padding(.horizontal, 12)
+                Rectangle().fill(theme.borderColor).frame(width: 1, height: 14)
+            } else {
+                segment(workspace.phpVersion.map { "PHP \($0)" } ?? String(localized: "PHP not found"),
+                        color: workspace.phpVersion == nil ? .red : theme.mutedColor)
+            }
             if let result = tab.result, let ms = result.milliseconds {
                 let time = ms < 1 ? "<1 ms" : String(format: "%.0f ms", ms)
                 let memory = result.memory.map { " / " + ByteCountFormatter.string(fromByteCount: Int64($0), countStyle: .memory) } ?? ""
                 segment(time + memory)
             }
             Spacer()
-            Text(tab.project.map { ($0.path(percentEncoded: false) as NSString).abbreviatingWithTildeInPath }
+            Text(workspace.connection(of: tab).map { "\($0.username)@\($0.host):\($0.remotePath)" }
+                 ?? tab.project.map { ($0.path(percentEncoded: false) as NSString).abbreviatingWithTildeInPath }
                  ?? (tab.isWelcome ? "" : String(localized: "Plain PHP")))
                 .lineLimit(1)
                 .truncationMode(.head)
