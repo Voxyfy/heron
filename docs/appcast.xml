@@ -6,5 +6,15 @@
     <description>Heron updates</description>
     <language>en</language>
     <!-- scripts/release.sh appends one <item> per release here. -->
+    <item>
+      <title>Heron 1.0.0</title>
+      <pubDate>Thu, 15 Oct 2026 15:05:46 +0300</pubDate>
+      <sparkle:version>1</sparkle:version>
+      <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+      <sparkle:releaseNotesLink>https://voxyfy.github.io/heron/releases/1.0.0.html</sparkle:releaseNotesLink>
+      <enclosure url="https://github.com/Voxyfy/heron/releases/download/v1.0.0/Heron-1.0.0.dmg"
+                 sparkle:edSignature="/yMcNCz+vv8WbkVcz8WAWFm/hcFabNltdAF5gfmFv2U6pFKcI4bgSo5IQWSyK2H2zhKF757oehHuTbWptOFEAA==" length="14067717" type="application/octet-stream"/>
+    </item>
   </channel>
 </rss>

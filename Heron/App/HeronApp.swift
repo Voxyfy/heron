@@ -80,7 +80,8 @@ struct HeronApp: App {
             }
         }
         Settings {
-            SettingsView()
+            // The Settings scene is separate from the window; the license pane reads this.
+            SettingsView().environment(workspace.license)
         }
     }
 }

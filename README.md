@@ -33,7 +33,7 @@ Heron runs PHP snippets with the PHP already on your Mac (Laravel Herd or Homebr
 
 ## Get Heron
 
-- Download the latest DMG from [Releases](https://github.com/Voxyfy/heron/releases/latest). It's signed and notarized; updates arrive in the app (Sparkle).
+- Download [Heron.dmg](https://github.com/Voxyfy/heron/releases/latest/download/Heron.dmg) (or pick a version under [Releases](https://github.com/Voxyfy/heron/releases)). It's signed and notarized; updates arrive in the app (Sparkle).
 - 14-day free trial, then **$10 a year** for two Macs, sold through Lemon Squeezy. The key goes into Heron ▸ License… (or Settings ▸ License).
 - Site: [voxyfy.github.io/heron](https://voxyfy.github.io/heron) · [Support](https://voxyfy.github.io/heron/support.html) · [Privacy](https://voxyfy.github.io/heron/privacy.html)
 

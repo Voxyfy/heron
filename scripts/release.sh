@@ -87,7 +87,11 @@ mkdir -p docs/releases
 <body><h2>Heron $VERSION</h2><ul><li>…</li></ul></body></html>
 EOF
 
+# The site's Download button points at the unversioned name, so every release ships both.
+cp "$DMG" "$OUT/Heron.dmg"
+
 echo
-echo "Done: $DMG"
-echo "Next: edit docs/releases/$VERSION.html, commit docs/, push, then:"
-echo "  gh release create v$VERSION \"$DMG\" --title \"Heron $VERSION\" --notes-file docs/releases/$VERSION.html"
+echo "Done: $DMG (and $OUT/Heron.dmg, the same file for the site's Download button)"
+echo "Next: edit docs/releases/$VERSION.html, commit docs/, push, then create the GitHub release"
+echo "v$VERSION with BOTH files attached, e.g.:"
+echo "  gh release create v$VERSION \"$DMG\" \"$OUT/Heron.dmg\" --title \"Heron $VERSION\" --notes-file docs/releases/$VERSION.html"
